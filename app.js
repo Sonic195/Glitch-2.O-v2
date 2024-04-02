@@ -55,19 +55,45 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
 
-    // "gifify" command
     if (name === "gifify") {
-      // Search for a gif based on the user's input
-      const searchTerm = options.find((opt) => opt.name === "search").value;
-      const gifUrl = await searchForGif(searchTerm); // This function will handle the API call
-
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `Here's your gif: ${gifUrl}`,
-        },
-      });
+      const query = options[0].value;
+      try {
+        const response = await fetch(
+          `https://api.giphy.com/v1/gifs/search?api_key=${
+            process.env.GIPHY_API_KEY
+          }&q=${encodeURIComponent(query)}&limit=1`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data && data.data.length > 0) {
+          const gifUrl = data.data[0].images.original.url;
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: gifUrl,
+            },
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "No GIFs found for your query.",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching from GIPHY API:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching GIFs.",
+          },
+        });
+      }
     }
 
     if (name === "caller") {
