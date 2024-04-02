@@ -100,10 +100,12 @@ const COINFLIP_COMMAND = {
 };
 
 const WBC_COMMAND = {
-  name: "wbc",
+  name: "water-bucket-clutch",
   description: "attempt a water bucket clutch",
   type: 1,
 };
+
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,

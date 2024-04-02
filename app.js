@@ -67,7 +67,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    if (name === "wbc") {
+    if (name === "water-bucket-clutch") {
       // lander
       function lander() {
         const land = ["failed", "failed", "failed", "got a lucky clutch"];
