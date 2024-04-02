@@ -27,8 +27,8 @@ client.on("ready", () => {
   client.user.setPresence({
     activities: [
       {
-        name: "causing chaos",
-        type: ActivityType.Custom,
+        name: "IPL",
+        type: ActivityType.Watching,
         assets: {
           large_image: "embedded_background",
           large_text: "chillin",
