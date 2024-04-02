@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, ActivityType, MessageAttachment } = require('discord.js');
+const { Client, GatewayIntentBits, ActivityType, AttachmentBuilder } = require('discord.js');
 
 // Define the intents required for your bot
 const intents = [
@@ -40,7 +40,7 @@ client.on('messageCreate', async message => {
     const { default: fetch } = await import('node-fetch');
 
     // Fetch the image of the day from NASA's API
-    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=YOUR_NASA_API_KEY'; // Replace with your actual NASA API key
+    const apiUrl = 'https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95'; // Replace with your actual NASA API key
     const response = await fetch(apiUrl);
     const data = await response.json();
     const imageUrl = data.url;
@@ -48,7 +48,7 @@ client.on('messageCreate', async message => {
     // Check if the media type is an image and not a video
     if (data.media_type === 'image') {
       // Create an attachment and send the image
-      const attachment = new MessageAttachment(imageUrl);
+      const attachment = new AttachmentBuilder(imageUrl);
       message.channel.send({ files: [attachment] });
     } else {
       // If the media type is not an image, send a message to inform the user
@@ -56,6 +56,13 @@ client.on('messageCreate', async message => {
     }
   }
 });
+
+client.on('messageCreate', message => {
+  if (message.content.toLowerCase() === 'PARTY') {
+    message.reply('ALVIN');
+  }
+});
+
 
 // Login to Discord with your app's token
 client.login(process.env.DISCORD_TOKEN);
