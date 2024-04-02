@@ -67,6 +67,15 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+    if (name === "image-of-the-day") {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "",
+        },
+      });
+    }
     if (name === "water-bucket-clutch") {
       // lander
       function lander() {

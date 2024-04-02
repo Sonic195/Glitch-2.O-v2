@@ -105,6 +105,11 @@ const WBC_COMMAND = {
   type: 1,
 };
 
+const IOTD_COMMAND = {
+  name: "image-of-the-day",
+  description: "if the bot is offline, use this to get the nasa image of the day",
+  type: 1,
+};
 
 
 const ALL_COMMANDS = [
@@ -113,6 +118,7 @@ const ALL_COMMANDS = [
   GLITCH_COMMAND,
   COINFLIP_COMMAND,
   WBC_COMMAND,
+  IOTD_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
