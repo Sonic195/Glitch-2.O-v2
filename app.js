@@ -85,7 +85,8 @@ app.post("/interactions", async function (req, res) {
         )}&per_page=1`,
         {
           headers: {
-            Authorization: "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm",
+            Authorization:
+              "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm",
           },
         }
       )
@@ -116,6 +117,7 @@ app.post("/interactions", async function (req, res) {
           // Handle the error appropriately
         });
     }
+    
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
       const apiUrl =
