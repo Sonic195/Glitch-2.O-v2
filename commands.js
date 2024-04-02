@@ -114,12 +114,12 @@ const IOTD_COMMAND = {
 
 const IMAGE_COMMAND = {
   name: "image",
-  description: "search for gifs",
+  description: "search for image",
   type: 1,
   options: [
     {
       name: "search",
-      description: "search for gif",
+      description: "search for image",
       type: 3,
       required: true
     }
@@ -168,6 +168,21 @@ const CALLER_COMMAND = {
   ]
 }
 
+const GIF_COMMAND = {
+  name: "gifify",
+  description: "find gifs",
+  type: 1,
+  options: [
+    {
+      name: "search",
+      description: "search for gif",
+      type: 3,
+      required: true
+    }
+  ]
+};
+
+
 const ALL_COMMANDS = [
   TEST_COMMAND,
   CHALLENGE_COMMAND,
@@ -177,6 +192,7 @@ const ALL_COMMANDS = [
   IOTD_COMMAND,
   IMAGE_COMMAND,
   CALLER_COMMAND,
+  GIF_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
