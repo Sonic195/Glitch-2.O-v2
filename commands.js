@@ -114,30 +114,16 @@ const IOTD_COMMAND = {
 
 const RANDOM_COMMAND = {
   name: "random",
-  description: "the most random command",
+  description: "get a random image",
   type: 1,
   options: [
     {
-      name: "random",
-      description: "unknown",
+      name: "topic",
+      description: "topic is...",
       type: 3,
-      required: true,
-      choices: [
-        {
-          name: "jokes",
-          value: "jokes",
-        },
-        {
-          name: "facts",
-          value: "facts",
-        },
-        {
-          name: "images",
-          value: "images",
-        },
-      ],
-    },
-  ],
+      required: true
+    }
+  ]
 };
 
 const ALL_COMMANDS = [
