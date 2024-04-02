@@ -55,6 +55,21 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
 
+    // "gifify" command
+    if (name === "gifify") {
+      // Search for a gif based on the user's input
+      const searchTerm = options.find((opt) => opt.name === "search").value;
+      const gifUrl = await searchForGif(searchTerm); // This function will handle the API call
+
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Here's your gif: ${gifUrl}`,
+        },
+      });
+    }
+
     if (name === "caller") {
       const user = options.find((opt) => opt.name === "user").value;
       const callType = options.find((opt) => opt.name === "type").value;
@@ -85,7 +100,7 @@ app.post("/interactions", async function (req, res) {
       });
     }
 
-    if (name === "random") {
+    if (name === "image") {
       const query = options[0].value;
       try {
         const response = await fetch(

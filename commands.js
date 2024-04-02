@@ -112,14 +112,14 @@ const IOTD_COMMAND = {
   type: 1,
 };
 
-const RANDOM_COMMAND = {
-  name: "random",
-  description: "get a random image",
+const IMAGE_COMMAND = {
+  name: "image",
+  description: "search for gifs",
   type: 1,
   options: [
     {
-      name: "topic",
-      description: "topic is...",
+      name: "search",
+      description: "search for gif",
       type: 3,
       required: true
     }
@@ -175,7 +175,7 @@ const ALL_COMMANDS = [
   COINFLIP_COMMAND,
   WBC_COMMAND,
   IOTD_COMMAND,
-  RANDOM_COMMAND,
+  IMAGE_COMMAND,
   CALLER_COMMAND,
 ];
 
