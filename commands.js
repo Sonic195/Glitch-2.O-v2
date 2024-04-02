@@ -154,6 +154,13 @@ const CALLER_COMMAND = {
         {
           name: "type 3",
           value: "3",
+        },
+        {
+          name: "type 4",
+          value: "4",
+        },
+        {
+          name: ""
         }
       ]
     }

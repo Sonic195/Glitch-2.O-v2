@@ -54,18 +54,36 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-    
+
     if (name === "caller") {
-      const user = options[0].value;
-      
+      const user = options.find((opt) => opt.name === "user").value;
+      const callType = options.find((opt) => opt.name === "type").value;
+
+      let callMessage = "";
+      switch (callType) {
+        case "1":
+          callMessage = `<@${user}> where are you`;
+          break;
+        case "2":
+          callMessage = `<@${user}> hurry up`;
+          break;
+        case "3":
+          callMessage = `<@${user}> hello??`;
+          break;
+        case "4":
+          callMessage = `<@${user}> come online`;
+          break;
+        case "you suck" = `<@${user}> you suck`;
+      }
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `<@${user}> come online`,
+          content: callMessage,
         },
       });
     }
-    
+
     if (name === "random") {
       const query = options[0].value;
       try {
@@ -75,7 +93,7 @@ app.post("/interactions", async function (req, res) {
           )}&per_page=1`,
           {
             headers: {
-              Authorization: process.env.PEXELS_API_KEY // Use the API key from the environment variable
+              Authorization: process.env.PEXELS_API_KEY, // Use the API key from the environment variable
             },
           }
         );
@@ -106,8 +124,8 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
-        // "test" command
+
+    // "test" command
     if (name === "test") {
       // Send a message into the channel where command was triggered from
       return res.send({
@@ -128,7 +146,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    
+
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
       const apiUrl =
