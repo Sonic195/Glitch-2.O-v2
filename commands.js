@@ -134,7 +134,7 @@ const CALLER_COMMAND = {
     {
       name: "user",
       description: "who to @",
-      type: 3,
+      type: 6,
       required: true,
     }
   ]
