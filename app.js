@@ -55,6 +55,17 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
     
+    if (name === "caller") {
+      const user = options[0].value;
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: "success",
+        },
+      });
+    }
+    
     if (name === "random") {
       const query = options[0].value;
       try {

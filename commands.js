@@ -126,6 +126,20 @@ const RANDOM_COMMAND = {
   ]
 };
 
+const CALLER_COMMAND = {
+  name: "caller",
+  description: "@ a user",
+  type: 1,
+  options: [
+    {
+      name: "user",
+      description: "who to @",
+      type: 3,
+      required: true,
+    }
+  ]
+}
+
 const ALL_COMMANDS = [
   TEST_COMMAND,
   CHALLENGE_COMMAND,
@@ -134,6 +148,7 @@ const ALL_COMMANDS = [
   WBC_COMMAND,
   IOTD_COMMAND,
   RANDOM_COMMAND,
+  CALLER_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
