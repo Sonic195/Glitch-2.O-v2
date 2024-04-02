@@ -76,8 +76,7 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "random") {
-      // Assuming 'options' is an object containing the user's input
-      const query = options.getString("topic"); // Get the user's query from the command options
+      const query = interaction.options.getString("topic"); // Get the user's query from the command options
 
       // Make a request to the Pexels API
       fetch(
