@@ -68,13 +68,39 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "image-of-the-day") {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: "",
-        },
-      });
+      // Fetch the image of the day from NASA's API
+      const apiUrl =
+        "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95"; // Replace with your actual NASA API key
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      const imageUrl = data.url;
+
+      // Check if the media type is an image and not a video
+      if (data.media_type === "image") {
+        // Create an attachment for the image
+        const attachment = new MessageAttachment(
+          imageUrl,
+          "image-of-the-day.jpg"
+        );
+
+        // Send a message into the channel where command was triggered from
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "Here is the image of the day:",
+            files: [attachment],
+          },
+        });
+      } else {
+        // If the media type is not an image, send a message to inform the user
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content:
+              "The NASA Picture of the Day is not an image today. Please check back tomorrow!",
+          },
+        });
+      }
     }
     if (name === "water-bucket-clutch") {
       // lander
@@ -95,7 +121,7 @@ app.post("/interactions", async function (req, res) {
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           // Fetches a random emoji to send from a helper function
-          content:  flipper() + " wins",
+          content: flipper() + " wins",
           ephemeral: false,
         },
       });
