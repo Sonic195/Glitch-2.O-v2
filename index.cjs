@@ -83,6 +83,13 @@ client.on("message", (msg) => {
   if (!msg.author.bot) {
     messageCount++;
   }
+  
+  client.on('message', msg => {
+  if (!msg.author.bot) {
+    messageCount++;
+    console.log(`Message count is now: ${messageCount}`); // Log the message count
+  }
+
 
   // When message count reaches the threshold, send a random message and reset the counter
   if (messageCount >= MESSAGE_THRESHOLD) {
