@@ -76,14 +76,46 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "random") {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: "",
-        },
-      });
+      // Assuming 'options' is an object containing the user's input
+      const query = options.getString("topic"); // Get the user's query from the command options
+
+      // Make a request to the Pexels API
+      fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+          query
+        )}&per_page=1`,
+        {
+          headers: {
+            Authorization: "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && data.photos.length > 0) {
+            const imageUrl = data.photos[0].src.original;
+
+            // Send a message with the image URL into the channel where the command was triggered from
+            return res.send({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                content: imageUrl, // You might want to send this as an embed for a better presentation
+              },
+            });
+          } else {
+            // Handle the case where no images are returned for the query
+            return res.send({
+              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+              data: {
+                content: "No images found for your query.",
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching from Pexels API:", error);
+          // Handle the error appropriately
+        });
     }
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
