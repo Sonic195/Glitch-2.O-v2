@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import fetch from "node-fetch";
 import {
   InteractionType,
   InteractionResponseType,
@@ -55,19 +56,19 @@ app.post("/interactions", async function (req, res) {
     const { name, options } = data;
     
     if (name === "random") {
-      const query = options[0].value; // Access the 'value' of the first option
-      fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-          query
-        )}&per_page=1`,
-        {
-          headers: {
-            Authorization: "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm" // Replace with your actual API key
-          },
-        }
-      )
-      .then((response) => response.json())
-      .then((data) => {
+      const query = options[0].value;
+      try {
+        const response = await fetch(
+          `https://api.pexels.com/v1/search?query=${encodeURIComponent(
+            query
+          )}&per_page=1`,
+          {
+            headers: {
+              Authorization: process.env.PEXELS_API_KEY // Use the API key from the environment variable
+            },
+          }
+        );
+        const data = await response.json();
         if (data && data.photos.length > 0) {
           const imageUrl = data.photos[0].src.original;
           return res.send({
@@ -84,8 +85,7 @@ app.post("/interactions", async function (req, res) {
             },
           });
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching from Pexels API:", error);
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -93,10 +93,10 @@ app.post("/interactions", async function (req, res) {
             content: "An error occurred while fetching images.",
           },
         });
-      });
+      }
     }
-
-    // "test" command
+    
+        // "test" command
     if (name === "test") {
       // Send a message into the channel where command was triggered from
       return res.send({
