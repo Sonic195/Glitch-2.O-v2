@@ -76,45 +76,45 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "random") {
-      const query = options[0].value("topic");
+      const query = options[0].value; // Access the 'value' of the first option
       fetch(
         `https://api.pexels.com/v1/search?query=${encodeURIComponent(
           query
         )}&per_page=1`,
         {
           headers: {
-            Authorization: "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm",
+            Authorization: "tG5Qb0xJDx1oSmGDkCwpHZazlxadwid58zOBpkaH0t8lz0HVMNlogTEm" // Replace with your actual API key
           },
         }
       )
-        .then((response) => response.json())
-        .then((data) => {
-          if (data && data.photos.length > 0) {
-            const imageUrl = data.photos[0].src.original;
-            return res.send({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                content: imageUrl,
-              },
-            });
-          } else {
-            return res.send({
-              type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-              data: {
-                content: "No images found for your query.",
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching from Pexels API:", error);
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.photos.length > 0) {
+          const imageUrl = data.photos[0].src.original;
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: "An error occurred while fetching images.",
+              content: imageUrl,
             },
           });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "No images found for your query.",
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching from Pexels API:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching images.",
+          },
         });
+      });
     }
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
