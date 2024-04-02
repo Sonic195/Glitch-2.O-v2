@@ -137,7 +137,26 @@ const CALLER_COMMAND = {
       type: 6,
       required: true,
     },
-    
+    {
+      name: "type",
+      description: "type of call",
+      type: 3,
+      require: true,
+      options: [
+        {
+          name: "type 1",
+          value: "1",
+        },
+        {
+          name: "type 2",
+          value: "2",
+        },
+        {
+          name: "type 3",
+          value: "3",
+        }
+      ]
+    }
   ]
 }
 

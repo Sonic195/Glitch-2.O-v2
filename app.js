@@ -57,6 +57,7 @@ app.post("/interactions", async function (req, res) {
     
     if (name === "caller") {
       const user = options[0].value;
+      
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
