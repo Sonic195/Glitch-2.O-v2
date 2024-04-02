@@ -104,6 +104,14 @@ On the **General Information** tab, there will be an **Interactions Endpoint URL
 
 Click **Save Changes**, and your app should be ready to run 🚀
 
+## Get the bot online and other commands
+
+run:
+```
+node index.cjs
+```
+The bot should be online
+
 ## Other resources
 - Read **[the documentation](https://discord.com/developers/docs/intro)** for in-depth information about API features.
 - Browse the `examples/` folder in this project for smaller, feature-specific code examples
