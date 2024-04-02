@@ -21,7 +21,8 @@ client.on('ready', () => {
   client.user.setPresence({
     activities: [{
       name: 'spotify', 
-      type: ActivityType.Listening, 
+      type: ActivityType.Streaming,
+      url: ""
       assets: {
         large_image: 'embedded_background',
         large_text: 'chillin',
