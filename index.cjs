@@ -20,9 +20,9 @@ client.on('ready', () => {
   // Set the rich presence for the bot
   client.user.setPresence({
     activities: [{
-      name: 'spotify', 
-      type: ActivityType.Streaming,
-      url: ""
+      name: 'causing chaos', 
+      type: ActivityType.Custom,
+      url: 'https://youtube.com/watch?v=dQw4w9WgXcQ&pp=ygUIUmlja3JvbGw%3D',
       assets: {
         large_image: 'embedded_background',
         large_text: 'chillin',
