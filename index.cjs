@@ -58,7 +58,7 @@ client.on('messageCreate', async message => {
 });
 
 client.on('messageCreate', message => {
-  if (message.content.toLowerCase() === 'PARTY') {
+  if (message.content.toLowerCase() === 'party') {
     message.reply('ALVIN');
   }
 });
