@@ -73,6 +73,12 @@ client.on("messageCreate", (message) => {
   }
 });
 
+client.on("messageCreate", (message) => {
+  if (message.content.toLowerCase() === "cheer") {
+    message.reply("INDIA, INDIA ");
+  }
+});
+
 const randomMessages = ["Hello, world!", "I am a bot!", "How are you today?"];
 
 let messageCount = 0;

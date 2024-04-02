@@ -73,7 +73,8 @@ app.post("/interactions", async function (req, res) {
         case "4":
           callMessage = `<@${user}> come online`;
           break;
-        case "you suck" = `<@${user}> you suck`;
+        case "5":
+          callMessage = `<@${user}> you suck`;
       }
 
       return res.send({

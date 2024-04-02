@@ -141,26 +141,27 @@ const CALLER_COMMAND = {
       name: "type",
       description: "type of call",
       type: 3,
-      require: true,
-      options: [
+      required: true,
+      choices: [
         {
-          name: "type 1",
+          name: "where are you",
           value: "1",
         },
         {
-          name: "type 2",
+          name: "hurry up",
           value: "2",
         },
         {
-          name: "type 3",
+          name: "hello??",
           value: "3",
         },
         {
-          name: "type 4",
+          name: "come online",
           value: "4",
         },
         {
-          name: ""
+          name: "you suck",
+          value: "5",
         }
       ]
     }
