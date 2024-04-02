@@ -111,6 +111,19 @@ const IOTD_COMMAND = {
   type: 1,
 };
 
+const RANDOM_COMMAND = {
+  name: "random",
+  description: "the most random command",
+  type: 1,
+  options: [
+    {
+      name: "random",
+      description: "unknown",
+      type: 3,
+      required: true,
+    }
+  ]
+}
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
