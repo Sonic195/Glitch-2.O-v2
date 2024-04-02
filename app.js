@@ -8,6 +8,14 @@ import {
   ButtonStyleTypes,
 } from "discord-interactions";
 import {
+  Client,
+  GatewayIntentBits,
+  REST,
+  Routes,
+  SlashCommandBuilder,
+  AttachmentBuilder,
+} from "discord.js";
+import {
   VerifyDiscordRequest,
   getRandomEmoji,
   DiscordRequest,
@@ -70,7 +78,7 @@ app.post("/interactions", async function (req, res) {
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
       const apiUrl =
-        "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95"; // Replace with your actual NASA API key
+        "https://api.nasa.gov/planetary/apod?api_key=YOUR_NASA_API_KEY"; // Replace with your actual NASA API key
       const response = await fetch(apiUrl);
       const data = await response.json();
       const imageUrl = data.url;
@@ -78,28 +86,20 @@ app.post("/interactions", async function (req, res) {
       // Check if the media type is an image and not a video
       if (data.media_type === "image") {
         // Create an attachment for the image
-        const attachment = new MessageAttachment(
-          imageUrl,
+        const attachment = new AttachmentBuilder(imageUrl).setName(
           "image-of-the-day.jpg"
         );
 
-        // Send a message into the channel where command was triggered from
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "Here is the image of the day:",
-            files: [attachment],
-          },
+        // Reply to the interaction with the image
+        await interaction.reply({
+          content: "Here is the NASA image of the day:",
+          files: [attachment],
         });
       } else {
-        // If the media type is not an image, send a message to inform the user
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content:
-              "The NASA Picture of the Day is not an image today. Please check back tomorrow!",
-          },
-        });
+        // If the media type is not an image, inform the user
+        await interaction.reply(
+          "The NASA Picture of the Day is not an image today. Please check back tomorrow!"
+        );
       }
     }
     if (name === "water-bucket-clutch") {
