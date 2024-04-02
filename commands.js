@@ -107,7 +107,8 @@ const WBC_COMMAND = {
 
 const IOTD_COMMAND = {
   name: "image-of-the-day",
-  description: "if the bot is offline, use this to get the nasa image of the day",
+  description:
+    "if the bot is offline, use this to get the nasa image of the day",
   type: 1,
 };
 
@@ -121,9 +122,23 @@ const RANDOM_COMMAND = {
       description: "unknown",
       type: 3,
       required: true,
-    }
-  ]
-}
+      choices: [
+        {
+          name: "jokes",
+          value: "jokes",
+        },
+        {
+          name: "facts",
+          value: "facts",
+        },
+        {
+          name: "images",
+          value: "images",
+        },
+      ],
+    },
+  ],
+};
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -132,6 +147,7 @@ const ALL_COMMANDS = [
   COINFLIP_COMMAND,
   WBC_COMMAND,
   IOTD_COMMAND,
+  RANDOM_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
