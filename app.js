@@ -53,28 +53,7 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-
-    // "test" command
-    if (name === "test") {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: "hello world " + getRandomEmoji(),
-        },
-      });
-    }
-    if (name === "glitcher") {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: "success",
-        },
-      });
-    }
+    
     if (name === "random") {
       const query = options[0].value; // Access the 'value' of the first option
       fetch(
@@ -116,6 +95,29 @@ app.post("/interactions", async function (req, res) {
         });
       });
     }
+
+    // "test" command
+    if (name === "test") {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: "hello world " + getRandomEmoji(),
+        },
+      });
+    }
+    if (name === "glitcher") {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: "success",
+        },
+      });
+    }
+    
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
       const apiUrl =
