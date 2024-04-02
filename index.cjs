@@ -1,18 +1,35 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 
-// Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// Define the intents required for your bot
+const intents = [
+  GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.GuildPresences,
+  GatewayIntentBits.GuildMembers,
+  GatewayIntentBits.DirectMessages,
+  GatewayIntentBits.DirectMessageTyping,
+  GatewayIntentBits.GuildMessageTyping,
+];
+
+// Create a new client instance with the specified intents
+const client = new Client({ intents });
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  
+
   // Set the rich presence for the bot
   client.user.setPresence({
     activities: [{
-      name: 'with fire', // The message shown in the rich presence
-      type: ActivityType.Playing // The type of activity
+      name: 'spotify', 
+      type: ActivityType.Listening, 
+      assets: {
+        large_image: 'embedded_background',
+        large_text: 'chillin',
+        small_image: 'embedded_cover',
+        small_text: 'listening to spotify',
+      }
     }],
-    status: 'online' // The bot's status
+    status: 'online' 
   });
 });
 
