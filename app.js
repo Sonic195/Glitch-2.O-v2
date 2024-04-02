@@ -78,7 +78,7 @@ app.post("/interactions", async function (req, res) {
     if (name === "image-of-the-day") {
       // Fetch the image of the day from NASA's API
       const apiUrl =
-        "https://api.nasa.gov/planetary/apod?api_key=YOUR_NASA_API_KEY"; // Replace with your actual NASA API key
+        "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95"; // Replace with your actual NASA API key
       const response = await fetch(apiUrl);
       const data = await response.json();
       const imageUrl = data.url;

@@ -22,7 +22,8 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "node-fetch": "^3.3.0",
-    "rpc": "^3.3.3"
+    "rpc": "^3.3.3",
+    "discord-akairo": "^8.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
