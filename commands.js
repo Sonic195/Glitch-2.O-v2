@@ -182,6 +182,32 @@ const GIF_COMMAND = {
   ]
 };
 
+const ANNOUNCE_COMMAND = {
+  name: "announce",
+  description: "make an announcement",
+  type: 1,
+  options: [
+    {
+      name: "title",
+      description: "title of announcement",
+      type: 3,
+      required: true,
+    },
+    {
+      name: "sub-title",
+      description: "sub title of announcement",
+      type: 3,
+      required: false,
+    },
+    {
+      name: "context",
+      description: "context of announcement",
+      type: 3,
+      required: false,
+    },
+  ]
+}
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -193,6 +219,7 @@ const ALL_COMMANDS = [
   IMAGE_COMMAND,
   CALLER_COMMAND,
   GIF_COMMAND,
+  ANNOUNCE_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

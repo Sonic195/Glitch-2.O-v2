@@ -54,6 +54,13 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
+    
+    if (name === 'announce') {
+      const title = options.find((opt) => opt.name === "title").value;
+      const subTitle = options.find((opt) => opt.name === "sub-title").value;
+      const context = options.find((opt) => opt.name === "context").value;
+      
+    }
 
     if (name === "gifify") {
       const query = options[0].value;
