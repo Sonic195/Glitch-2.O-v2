@@ -62,11 +62,20 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "`pong! `"
-          
+          content: "`pong! `",
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  // Append the game ID to use later on
+                  custom_id: `accept_button_${req.body.id}`,
+                  label: "Accept",
+                  style: ButtonStyleTypes.PRIMARY,
+                },
+          ]
         }
-      })
-    }
 
     if (name === "announce") {
       const title = options.find((opt) => opt.name === "title").value;
