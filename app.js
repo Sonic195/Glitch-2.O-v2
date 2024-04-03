@@ -62,8 +62,8 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `# ${title}\n ## ${subTitle}\n${context}`
-        }
+          content: `# ${title}\n ## ${subTitle}\n${context}`,
+        },
       });
     }
 
@@ -200,15 +200,15 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    
-    if (name === "image") {
+
+    if (name === "image-of-the-day") {
       try {
         const response = await fetch(
-          "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95",
+          "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95"
         );
         const data = await response.json();
-        if (data && data.photos.length > 0) {
-          const imageUrl = data.photos[0].src.original;
+        if (data && data.url) {
+          const imageUrl = data.url;
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
@@ -219,21 +219,21 @@ app.post("/interactions", async function (req, res) {
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: "there is no image today",
+              content: "There is no image today.",
             },
           });
         }
       } catch (error) {
-        console.error("error fetching from nasa api:", error);
+        console.error("Error fetching from NASA API:", error);
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: "An error occurred while fetching image",
+            content: "An error occurred while fetching the image.",
           },
         });
       }
     }
-    
+
     if (name === "water-bucket-clutch") {
       // lander
       function lander() {
@@ -373,6 +373,8 @@ app.post("/interactions", async function (req, res) {
     }
   }
 });
+
+
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);

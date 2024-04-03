@@ -107,8 +107,7 @@ const WBC_COMMAND = {
 
 const IOTD_COMMAND = {
   name: "image-of-the-day",
-  description:
-    "if the bot is offline, use this to get the nasa image of the day",
+  description: "get the nasa image of the day",
   type: 1,
 };
 
