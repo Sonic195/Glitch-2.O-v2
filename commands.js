@@ -240,6 +240,7 @@ const ALL_COMMANDS = [
   GIF_COMMAND,
   ANNOUNCE_COMMAND,
   PING_COMMAND,
+  YOUTUBE_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
