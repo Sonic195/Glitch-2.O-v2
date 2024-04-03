@@ -80,7 +80,7 @@ app.post("/interactions", async function (req, res) {
           {
             type: 2, // Type 2 is for BUTTON
             custom_id: "ping_pong_button",
-            label: "Ping!",
+            label: "Ping 🏓",
             style: 1, // Style 1 is for PRIMARY
           },
         ],
@@ -357,7 +357,7 @@ app.post("/interactions", async function (req, res) {
         return res.send({
           type: InteractionResponseType.UPDATE_MESSAGE,
           data: {
-            content: `Ping! 🏓\nStreak: ${currentStreak}`,
+            content: `Pong 🏓\nStreak: ${currentStreak}`,
             components: endpoint.components, // Keep the original components
           },
         });
@@ -368,7 +368,7 @@ app.post("/interactions", async function (req, res) {
         return res.send({
           type: InteractionResponseType.UPDATE_MESSAGE,
           data: {
-            content: `Miss! 😓\nStreak has been reset.`,
+            content: `missed\nStreak has been reset.`,
             components: endpoint.components, // Keep the original components
           },
         });
