@@ -54,18 +54,31 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-    
+
     if (name === "ping") {
-      const pingPong = ['ping', 'miss'];
+      const pingPong = ["ping", "miss"];
       return pingPong[Math.floor(Math.random() * pingPong.length)];
-      
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "`pong! `"
-          
-        }
-      })
+          content: "`pong! `",
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  // Append the game ID to use later on
+                  custom_id: `accept_button_${req.body.id}`,
+                  label: "Accept",
+                  style: ButtonStyleTypes.PRIMARY,
+                },
+              ],
+            },
+          ],
+        },
+      });
     }
 
     if (name === "announce") {
@@ -386,8 +399,6 @@ app.post("/interactions", async function (req, res) {
     }
   }
 });
-
-
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
