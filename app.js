@@ -374,7 +374,33 @@ app.post("/interactions", async function (req, res) {
   }
 });
 
+const client = new Client();
 
+const myIntents = new Intents([
+  Intents.FLAGS.GUILDS,
+  Intents.FLAGS.GUILD_MESSAGES,
+
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+  
+  client.user.setPresence({
+    activities: [
+      {
+        name: "IPL",
+        type: ActivityType.Watching,
+        assets: {
+          large_image: "embedded_background",
+          large_text: "chillin",
+          small_image: "embedded_cover",
+          small_text: "listening to spotify",
+        },
+      },
+    ],
+    status: "online",
+  });
+}),
+
+client.login(process.env.DISCORD_TOKR
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
