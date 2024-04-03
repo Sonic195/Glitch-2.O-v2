@@ -213,6 +213,20 @@ const PING_COMMAND = {
   type: 1,
 }
 
+const YOUTUBE_COMMAND = {
+  name: "youtube",
+  description: "what to watch...",
+  type: 1,
+  options: [
+    {
+      name: "query",
+      description: "search youtube",
+      type: 3,
+      required: true,
+    }
+  ]
+}
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
