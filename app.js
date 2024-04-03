@@ -349,29 +349,30 @@ app.post("/interactions", async function (req, res) {
       let streaks = 0;
 
       if (result === "ping") {
-        streaks++;
-        setStreak(streaks); // Function to save the updated streak for the user
-        // Edit the original message to update the streak count
-        return res.send({
-          type: InteractionResponseType.UPDATE_MESSAGE,
-          data: {
-            content: `Ping! 🏓\nStreak: ${streaks}`,
-            components: endpoint.components, // Keep the original components
-          },
-        });
-      } else {
-        streaks = 0;
-        setStreak(streaks); // Function to reset the streak for the user
-        // Edit the original message to reset the streak count
-        return res.send({
-          type: InteractionResponseType.UPDATE_MESSAGE,
-          data: {
-            content: `Miss! 😓\nStreak has been reset.`,
-            components: endpoint.components, // Keep the original components
-          },
-        });
-      }
-    }
+  let currentStreak = getStreak(userId); // Get the current streak for the user
+  currentStreak++; // Increment the streak
+  setStreak(userId, currentStreak); // Update the streak for the user
+
+  // Edit the original message to update the streak count
+  return res.send({
+    type: InteractionResponseType.UPDATE_MESSAGE,
+    data: {
+      content: `Ping! 🏓\nStreak: ${currentStreak}`,
+      components: endpoint.components, // Keep the original components
+    },
+  });
+} else {
+  setStreak(userId, 0); // Reset the streak for the user
+
+  // Edit the original message to reset the streak count
+  return res.send({
+    type: InteractionResponseType.UPDATE_MESSAGE,
+    data: {
+      content: `Miss! 😓\nStreak has been reset.`,
+      components: endpoint.components, // Keep the original components
+    },
+  });
+}
 
     if (componentId.startsWith("accept_button_")) {
       // get the associated game ID
