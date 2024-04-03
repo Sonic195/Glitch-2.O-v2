@@ -40,6 +40,7 @@ function setStreak(userId, streak) {
   streaks[userId] = streak;
 }
 
+const userId = `get/users/{user.id}`
 // Create an express app
 const app = express();
 // Get port, or default to 3000
@@ -345,22 +346,22 @@ app.post("/interactions", async function (req, res) {
       
       const pingPong = ["ping", "miss"];
       const result = pingPong[Math.floor(Math.random() * pingPong.length)];
-      let streak = 0; // You'll need to store this outside of the request handler to persist the value
+      let streaks = 0;
 
       if (result === "ping") {
-        streak++;
-        setStreak(streak); // Function to save the updated streak for the user
+        streaks++;
+        setStreak(streaks); // Function to save the updated streak for the user
         // Edit the original message to update the streak count
         return res.send({
           type: InteractionResponseType.UPDATE_MESSAGE,
           data: {
-            content: `Ping! 🏓\nStreak: ${streak}`,
+            content: `Ping! 🏓\nStreak: ${streaks}`,
             components: endpoint.components, // Keep the original components
           },
         });
       } else {
-        streak = 0;
-        setStreak(streak); // Function to reset the streak for the user
+        streaks = 0;
+        setStreak(streaks); // Function to reset the streak for the user
         // Edit the original message to reset the streak count
         return res.send({
           type: InteractionResponseType.UPDATE_MESSAGE,
