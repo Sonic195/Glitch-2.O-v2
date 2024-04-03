@@ -56,30 +56,24 @@ app.post("/interactions", async function (req, res) {
     const { name, options } = data;
 
     if (name === "ping") {
-      const pingPong = ["ping", "miss"];
-      return pingPong[Math.floor(Math.random() * pingPong.length)];
-      let streak = 0,
-      if (pingPong = "ping"),
-        streak++
+      // Send the initial message with a button
+      const row = {
+        type: 1, // Type 1 is for ACTION_ROW
+        components: [
+          {
+            type: 2, // Type 2 is for BUTTON
+            custom_id: "ping_pong_button",
+            label: "Ping!",
+            style: 1, // Style 1 is for PRIMARY
+          },
+        ],
+      };
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `pong! \n${streak}`,
-          components: [
-            {
-              type: MessageComponentTypes.ACTION_ROW,
-              components: [
-                {
-                  type: MessageComponentTypes.BUTTON,
-                  // Append the game ID to use later on
-                  custom_id: `accept_button_${req.body.id}`,
-                  label: "Ping!",
-                  style: ButtonStyleTypes.PRIMARY,
-                },
-              ],
-            },
-          ],
+          content: "Click the button to play Ping Pong!",
+          components: [row],
         },
       });
     }
@@ -329,6 +323,30 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
+
+    if (componentId.startsWith=== "ping_pong_button") {
+      const pingPong = ["ping", "miss"];
+      const result = pingPong[Math.floor(Math.random() * pingPong.length)];
+      let streak = 0; // You'll need to store this outside of the request handler to persist the value
+
+      if (result === "ping") {
+        streak++;
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `Ping! 🏓\nStreak: ${streak}`,
+          },
+        });
+      } else {
+        streak = 0;
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `Miss! 😓\nStreak has been reset.`,
+          },
+        });
+      }
+    }
 
     if (componentId.startsWith("accept_button_")) {
       // get the associated game ID
