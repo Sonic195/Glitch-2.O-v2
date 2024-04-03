@@ -207,6 +207,12 @@ const ANNOUNCE_COMMAND = {
   ]
 }
 
+const PING_COMMAND = {
+  name: "ping",
+  description: "pong",
+  type: 1,
+}
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -219,6 +225,7 @@ const ALL_COMMANDS = [
   CALLER_COMMAND,
   GIF_COMMAND,
   ANNOUNCE_COMMAND,
+  PING_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

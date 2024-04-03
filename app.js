@@ -54,6 +54,19 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
+    
+    if (name === "ping") {
+      const pingPong = ['ping', 'miss'];
+      return pingPong[Math.floor(Math.random() * pingPong.length)];
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "`pong! `"
+          
+        }
+      })
+    }
 
     if (name === "announce") {
       const title = options.find((opt) => opt.name === "title").value;
