@@ -65,3 +65,21 @@ export function flipper() {
   const sides = ['heads', 'tails'];
   return sides[Math.floor(Math.random() * sides.length)];
 }
+
+// Placeholder for an in-memory storage
+// In a real application, you would use a database
+const streaks = {};
+
+// Function to get the current streak for a user
+function getStreak(userId) {
+  // Return the streak for the user if it exists, otherwise return 0
+  return streaks[userId] || 0;
+}
+
+// Function to set the streak for a user
+function setStreak(userId, streak) {
+  // Set the streak for the user
+  streaks[userId] = streak;
+}
+
+module.exports = { getStreak, setStreak };
