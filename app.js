@@ -341,34 +341,36 @@ app.post("/interactions", async function (req, res) {
     const componentId = data.custom_id;
 
     if (componentId.startsWith("ping_pong_button")) {
+      const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
+      
       const pingPong = ["ping", "miss"];
       const result = pingPong[Math.floor(Math.random() * pingPong.length)];
       let streak = 0; // You'll need to store this outside of the request handler to persist the value
 
       if (result === "ping") {
-      streak++;
-      setStreak(streak); // Function to save the updated streak for the user
-      // Edit the original message to update the streak count
-      return res.send({
-        type: InteractionResponseType.UPDATE_MESSAGE,
-        data: {
-          content: `Ping! 🏓\nStreak: ${streak}`,
-          components: message.components // Keep the original components
-        },
-      });
-    } else {
-      streak = 0;
-      setStreak(streak); // Function to reset the streak for the user
-      // Edit the original message to reset the streak count
-      return res.send({
-        type: InteractionResponseType.UPDATE_MESSAGE,
-        data: {
-          content: `Miss! 😓\nStreak has been reset.`,
-          components: message.components // Keep the original components
-        },
-      });
+        streak++;
+        setStreak(streak); // Function to save the updated streak for the user
+        // Edit the original message to update the streak count
+        return res.send({
+          type: InteractionResponseType.UPDATE_MESSAGE,
+          data: {
+            content: `Ping! 🏓\nStreak: ${streak}`,
+            components: endpoint.components, // Keep the original components
+          },
+        });
+      } else {
+        streak = 0;
+        setStreak(streak); // Function to reset the streak for the user
+        // Edit the original message to reset the streak count
+        return res.send({
+          type: InteractionResponseType.UPDATE_MESSAGE,
+          data: {
+            content: `Miss! 😓\nStreak has been reset.`,
+            components: endpoint.components, // Keep the original components
+          },
+        });
+      }
     }
-  }
 
     if (componentId.startsWith("accept_button_")) {
       // get the associated game ID
