@@ -72,7 +72,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "Click the button to play Ping Pong!",
+          content: "Pong!",
           components: [row],
         },
       });
@@ -324,29 +324,35 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    if (componentId.startsWith=== "ping_pong_button") {
+    if (componentId.startsWith("ping_pong_button")) {
       const pingPong = ["ping", "miss"];
       const result = pingPong[Math.floor(Math.random() * pingPong.length)];
       let streak = 0; // You'll need to store this outside of the request handler to persist the value
 
       if (result === "ping") {
-        streak++;
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: `Ping! 🏓\nStreak: ${streak}`,
-          },
-        });
-      } else {
-        streak = 0;
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: `Miss! 😓\nStreak has been reset.`,
-          },
-        });
-      }
+      streak++;
+      setStreak(userId, streak); // Function to save the updated streak for the user
+      // Edit the original message to update the streak count
+      return res.send({
+        type: InteractionResponseType.UPDATE_MESSAGE,
+        data: {
+          content: `Ping! 🏓\nStreak: ${streak}`,
+          components: message.components // Keep the original components
+        },
+      });
+    } else {
+      streak = 0;
+      setStreak(userId, streak); // Function to reset the streak for the user
+      // Edit the original message to reset the streak count
+      return res.send({
+        type: InteractionResponseType.UPDATE_MESSAGE,
+        data: {
+          content: `Miss! 😓\nStreak has been reset.`,
+          components: message.components // Keep the original components
+        },
+      });
     }
+  }
 
     if (componentId.startsWith("accept_button_")) {
       // get the associated game ID
