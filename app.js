@@ -58,11 +58,14 @@ app.post("/interactions", async function (req, res) {
     if (name === "ping") {
       const pingPong = ["ping", "miss"];
       return pingPong[Math.floor(Math.random() * pingPong.length)];
+      let streak = 0,
+      if (pingPong = "ping"),
+        streak++
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "`pong! `",
+          content: `pong! \n${streak}`,
           components: [
             {
               type: MessageComponentTypes.ACTION_ROW,
@@ -71,7 +74,7 @@ app.post("/interactions", async function (req, res) {
                   type: MessageComponentTypes.BUTTON,
                   // Append the game ID to use later on
                   custom_id: `accept_button_${req.body.id}`,
-                  label: "Accept",
+                  label: "Ping!",
                   style: ButtonStyleTypes.PRIMARY,
                 },
               ],
