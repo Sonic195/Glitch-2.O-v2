@@ -62,7 +62,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: ""
+          content: `# ${title}\n ## ${subTitle}\n${context}`
         }
       });
     }
@@ -200,34 +200,40 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-
-    if (name === "image-of-the-day") {
-      // Fetch the image of the day from NASA's API
-      const apiUrl =
-        "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95"; // Replace with your actual NASA API key
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      const imageUrl = data.url;
-
-      // Check if the media type is an image and not a video
-      if (data.media_type === "image") {
-        // Create an attachment for the image
-        const attachment = new AttachmentBuilder(imageUrl).setName(
-          "image-of-the-day.jpg"
+    
+    if (name === "image") {
+      try {
+        const response = await fetch(
+          "https://api.nasa.gov/planetary/apod?api_key=lzBaQJHm8F905xQF8JfpzciR43yJHldCvpep1a95",
         );
-
-        // Reply to the interaction with the image
-        await interaction.reply({
-          content: "Here is the NASA image of the day:",
-          files: [attachment],
+        const data = await response.json();
+        if (data && data.photos.length > 0) {
+          const imageUrl = data.photos[0].src.original;
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: imageUrl,
+            },
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "there is no image today",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("error fetching from nasa api:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching image",
+          },
         });
-      } else {
-        // If the media type is not an image, inform the user
-        await interaction.reply(
-          "The NASA Picture of the Day is not an image today. Please check back tomorrow!"
-        );
       }
     }
+    
     if (name === "water-bucket-clutch") {
       // lander
       function lander() {
