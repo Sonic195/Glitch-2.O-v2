@@ -23,7 +23,22 @@ import {
   flipper,
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
-const { getStreak, setStreak } = require('./utils')
+
+// Placeholder for an in-memory storage
+// In a real application, you would use a database
+const streaks = {};
+
+// Function to get the current streak for a user
+function getStreak(userId) {
+  // Return the streak for the user if it exists, otherwise return 0
+  return streaks[userId] || 0;
+}
+
+// Function to set the streak for a user
+function setStreak(userId, streak) {
+  // Set the streak for the user
+  streaks[userId] = streak;
+}
 
 // Create an express app
 const app = express();
@@ -332,7 +347,7 @@ app.post("/interactions", async function (req, res) {
 
       if (result === "ping") {
       streak++;
-      setStreak(userId, streak); // Function to save the updated streak for the user
+      setStreak(streak); // Function to save the updated streak for the user
       // Edit the original message to update the streak count
       return res.send({
         type: InteractionResponseType.UPDATE_MESSAGE,
@@ -343,7 +358,7 @@ app.post("/interactions", async function (req, res) {
       });
     } else {
       streak = 0;
-      setStreak(userId, streak); // Function to reset the streak for the user
+      setStreak(streak); // Function to reset the streak for the user
       // Edit the original message to reset the streak count
       return res.send({
         type: InteractionResponseType.UPDATE_MESSAGE,
