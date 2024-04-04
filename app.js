@@ -74,7 +74,8 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "youtube") {
       const query = options[0].value;
-      const maxVideos = 5;
+      const maxVideos = options.find((opt) => opt.name === "title").value;
+      
       try {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
@@ -89,7 +90,8 @@ app.post("/interactions", async function (req, res) {
         const data = await response.json();
         if (data && data.items.length > 0) {
           const videoId = data.items[0].id.videoId;
-          const videoUrls = data.items.map(`https://www.youtube.com/watch?v=${videoId}`).join('\n');
+          const videoUrls = data.items.map(item => `https://www.youtube.com/watch?v=${item.id.videoId}`).join('\n');
+
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
