@@ -223,6 +223,12 @@ const YOUTUBE_COMMAND = {
       description: "search youtube",
       type: 3,
       required: true,
+    },
+    {
+      name: "videos",
+      description: "number of vids for the request. must be single digit and < 0.",
+      type: 4,
+      required: true,
     }
   ]
 }

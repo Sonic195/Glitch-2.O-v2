@@ -74,7 +74,7 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "youtube") {
       const query = options[0].value;
-      const maxVideos = options.find((opt) => opt.name === "title").value;
+      const maxVideos = options.find((opt) => opt.name === "videos").value;
       
       try {
         const response = await fetch(
