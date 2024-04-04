@@ -149,7 +149,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `# ${title}\n ## ${subTitle}\n${context}\n ## ${subTitle2}\n`,
+          content: `# ${title}\n ## ${subTitle}\n${context}\n ## ${subTitle2}\n${context2}`,
         },
       });
     }
