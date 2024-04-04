@@ -217,7 +217,7 @@ const ANNOUNCE_COMMAND = {
       required: false,
     },
     {
-      name: "p.s.",
+      name: "ps",
       description: "add a ps",
       type: 3,
       required: false,
