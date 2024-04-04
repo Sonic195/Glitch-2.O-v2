@@ -89,11 +89,11 @@ app.post("/interactions", async function (req, res) {
         const data = await response.json();
         if (data && data.items.length > 0) {
           const videoId = data.items[0].id.videoId;
-          const videoUrls = (`https://www.youtube.com/watch?v=${videoId}`;
+          const videoUrls = data.items.map(`https://www.youtube.com/watch?v=${videoId}`).join('\n');
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: videoUrl,
+              content: videoUrls,
             },
           });
         } else {
