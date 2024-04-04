@@ -204,6 +204,18 @@ const ANNOUNCE_COMMAND = {
       type: 3,
       required: false,
     },
+    {
+      name: "sub-title2",
+      description: "sub title of announcement",
+      type: 3,
+      required: false,
+    },
+    {
+      name: "context2",
+      description: "context of announcement",
+      type: 3,
+      required: false,
+    },
   ]
 }
 

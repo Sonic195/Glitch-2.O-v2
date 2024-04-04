@@ -144,10 +144,12 @@ app.post("/interactions", async function (req, res) {
       const title = options.find((opt) => opt.name === "title").value;
       const subTitle = options.find((opt) => opt.name === "sub-title").value;
       const context = options.find((opt) => opt.name === "context").value;
+      const subTitle2 = options.find((opt) => opt.name === "sub-title2").value;
+      const context2 = options.find((opt) => opt.name === "context2").value;
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `# ${title}\n ## ${subTitle}\n${context}`,
+          content: `# ${title}\n ## ${subTitle}\n${context}\n ## ${subTitle2}\n`,
         },
       });
     }
