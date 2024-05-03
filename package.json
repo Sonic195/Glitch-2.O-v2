@@ -16,6 +16,7 @@
   "author": "Shadownite",
   "license": "MIT",
   "dependencies": {
+    "@discord/embedded-app-sdk": "^1.2.0",
     "discord": "^0.8.2",
     "discord-akairo": "^8.1.0",
     "discord-interactions": "^3.4.0",
