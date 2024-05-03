@@ -74,21 +74,16 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "pinger") {
       const startTime = Date.now();
+      const latency = Date.now() - startTime;
 
-      return res
-        .send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            // Fetches a random emoji to send from a helper function
-            content: "calculating ping...",
-          },
-        })
-        .then(() => {
-          const latency = Date.now() - startTime;
-          const content = `latency: ${laten
-        });
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: `latency: ${latency}ms`,
+        },
+      });
     }
-
     if (name === "youtube") {
       const query = options[0].value;
       const maxVideos = options.find((opt) => opt.name === "videos").value;
