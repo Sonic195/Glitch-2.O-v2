@@ -71,6 +71,22 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
+    
+    if (name === "pinger") {
+      
+      const startTime = Date.now();
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: "calculating ping...",
+        },
+      }).then(() => {
+        const latency = Date.now() - startTime;
+      const content = `latency: ${latency}ms`
+      })
+    }
 
     if (name === "youtube") {
       const query = options[0].value;

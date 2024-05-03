@@ -251,6 +251,12 @@ const YOUTUBE_COMMAND = {
   ]
 }
 
+const PINGER_COMMAND = {
+  name: "pinger",
+  description: "ping the bot",
+  type: 1,
+};
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -265,6 +271,7 @@ const ALL_COMMANDS = [
   ANNOUNCE_COMMAND,
   PING_COMMAND,
   YOUTUBE_COMMAND,
+  PINGER_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
