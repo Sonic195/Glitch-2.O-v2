@@ -92,7 +92,6 @@ app.post("/interactions", async function (req, res) {
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
             content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
-            flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
           },
         });
       } else {
