@@ -49,7 +49,7 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect("mongodb+srv://Joker:Sh%40d0wn1t3195@glitch2o.tqkm8rw.mongodb.net/myapp", {
+mongoose.connect("mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
