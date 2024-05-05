@@ -23,7 +23,7 @@ import {
   flipper,
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -49,7 +49,10 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect(process.env.MONGOOSE_CONNECT)
+mongoose.connect(process.env.MONGOOSE_CONNECT, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
@@ -61,7 +64,7 @@ const userRewardSchema = new mongoose.Schema({
   lastClaimed: Number,
 });
 
-const UserReward = mongoose.model('UserReward', userRewardSchema);
+const UserReward = mongoose.model("UserReward", userRewardSchema);
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -83,49 +86,67 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-    
+
     if (name === "daily") {
-      
       const userId = member.user.id;
       const currentTime = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000;
-      
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+      // Find the user's reward data in the database
       UserReward.findOne({ userId: userId }, (err, rewardData) => {
         if (err) {
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: "error",
-            }
-          })
-        } else if (rewardData && currentTime - rewardData.lastClaimed < oneDay) {
+              content: "An error occurred while fetching reward data.",
+            },
+          });
+        } else if (
+          rewardData &&
+          currentTime - rewardData.lastClaimed < oneDay
+        ) {
+          // User has already claimed their reward within the last 24 hours
+          const nextRewardTimestamp = Math.floor(
+            (rewardData.lastClaimed + oneDay) / 1000
+          );
+
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: "claimed already within the last 24 hours",
-            }
-          })
+              content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
+              flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
+            },
+          });
         } else {
-          UserReward.updateOne({ userId: userId }, { $set: { lastClaimed: currentTime } }, { upsert: true }, (err) => {
-    if (err) {
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: "An error occurred while updating the reward.",
-        },
-      });
-    } else {
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: "daily claimed!",
+          // User has not claimed their reward or it has been more than 24 hours
+          // Update the last claimed timestamp and increment knuts in the database
+          const knutsToAdd = 10; // Set the number of knuts to add
+          UserReward.updateOne(
+            { userId: userId },
+            { $set: { lastClaimed: currentTime }, $inc: { knuts: knutsToAdd } },
+            { upsert: true },
+            (err) => {
+              if (err) {
+                return res.send({
+                  type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                  data: {
+                    content: "An error occurred while updating the reward.",
+                  },
+                });
+              } else {
+                return res.send({
+                  type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+                  data: {
+                    content: `Your daily knuts have been claimed! You received ${knutsToAdd} knuts.`,
+                  },
+                });
+              }
+            }
+          );
         }
-      })
-      
+      });
     }
-  });
-      
-    
+
     if (name === "pinger") {
       const startTime = Date.now();
       const latency = Date.now() - startTime;
@@ -248,7 +269,6 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
 
     // "test" command
     if (name === "test") {
