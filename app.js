@@ -104,7 +104,7 @@ app.post("/interactions", async function (req, res) {
         
         await UserReward.create({
           userId,
-          
+          lastClaimed: new Date(),
         })
         
       }
