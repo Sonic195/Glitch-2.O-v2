@@ -106,17 +106,15 @@ app.post("/interactions", async function (req, res) {
             }
           })
         } else {
-          UserReward.updateOne({
-            userId: currentTime 
-          }, { upsert: true }, (err) => {
-            if (err) {
-              return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: "error",
-            }
-          })
-        } else {
+          UserReward.updateOne({ userId: userId }, { $set: { lastClaimed: currentTime } }, { upsert: true }, (err) => {
+    if (err) {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "An error occurred while updating the reward.",
+        },
+      });
+    } else {
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
@@ -125,6 +123,7 @@ app.post("/interactions", async function (req, res) {
       })
       
     }
+  });
       
     
     if (name === "pinger") {
