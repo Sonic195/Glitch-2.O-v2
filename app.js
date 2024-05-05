@@ -50,13 +50,14 @@ app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
+const lastClaimedRewards = {};
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  */
 app.post("/interactions", async function (req, res) {
   // Interaction type and data
-  const { type, id, data } = req.body;
+  const { type, id, data, member } = req.body;
 
   /**
    * Handle verification requests
@@ -71,7 +72,44 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
+    
+    if (name === "daily") {
+      const userId = member.user.id;
+      const currentTime = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
+      // Check if the user has already claimed their daily reward
+      if (
+        lastClaimedRewards[userId] &&
+        currentTime - lastClaimedRewards[userId] < oneDay
+      ) {
+        // User has already claimed their reward within the last 24 hours
+        const nextRewardTimestamp = Math.floor(
+          (lastClaimedRewards[userId] + oneDay) / 1000
+        );
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
+            flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
+          },
+        });
+      } else {
+        // User has not claimed their reward or it has been more than 24 hours
+        lastClaimedRewards[userId] = currentTime;
+        // Add coins to the user's account here
+        // ...
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `You've claimed your daily reward of X knuts!`, // Replace X with the number of knuts you want to give
+          },
+        });
+      }
+    }
+    
     if (name === "pinger") {
       const startTime = Date.now();
       const latency = Date.now() - startTime;
