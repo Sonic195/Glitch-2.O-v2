@@ -49,11 +49,19 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect('mongodb+srv://Joker:<password>@glitch2o.tqkm8rw.mongodb.net/?retryWrites=true&w=majority&appName=Glitch2O')
+mongoose.connect(process.env.MONGOOSE_CONNECT)
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
-const lastClaimedRewards = {};
+
+const userRewardSchema = new mongoose.Schema({
+  userId: String,
+  knuts: Number,
+  ytTokens: Number,
+  lastClaimed: Number,
+});
+
+const UserReward = mongoose.model('UserReward', userRewardSchema);
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -77,40 +85,27 @@ app.post("/interactions", async function (req, res) {
     const { name, options } = data;
     
     if (name === "daily") {
+      
       const userId = member.user.id;
       const currentTime = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-      // Check if the user has already claimed their daily reward
-      if (
-        lastClaimedRewards[userId] &&
-        currentTime - lastClaimedRewards[userId] < oneDay
-      ) {
-        // User has already claimed their reward within the last 24 hours
-        const nextRewardTimestamp = Math.floor(
-          (lastClaimedRewards[userId] + oneDay) / 1000
-        );
-
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
-          },
-        });
-      } else {
-        // User has not claimed their reward or it has been more than 24 hours
-        lastClaimedRewards[userId] = currentTime;
-        // Add coins to the user's account here
-        // ...
-
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: `You've claimed your daily reward of X knuts!`, // Replace X with the number of knuts you want to give
-          },
-        });
-      }
+      const oneDay = 24 * 60 * 60 * 1000;
+      
+      UserReward.findOne({ userId: userId }, (err, rewardData) => {
+        if (err) {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "error",
+            }
+          })
+        } else if (rewardData && currentTime - rewardData.lastClaimed < oneDay) {
+          const nextRewardTimestamp = Math.floor((lastClaimedRewards[userId] + oneDay) / 1000);
+          
+        }
+      })
+      
     }
+      
     
     if (name === "pinger") {
       const startTime = Date.now();
