@@ -1,12 +1,9 @@
 import "dotenv/config";
 import express from "express";
-import fetch from "node-fetch";
 import {
   InteractionType,
   InteractionResponseType,
   InteractionResponseFlags,
-  MessageComponentTypes,
-  ButtonStyleTypes,
 } from "discord-interactions";
 import {
   Client,
@@ -16,39 +13,26 @@ import {
   SlashCommandBuilder,
   AttachmentBuilder,
 } from "discord.js";
-import {
-  VerifyDiscordRequest,
-  getRandomEmoji,
-  DiscordRequest,
-  flipper,
-} from "./utils.js";
-import { getShuffledOptions, getResult } from "./game.js";
+import { VerifyDiscordRequest } from "./utils.js";
 
-const userId = `get/users/{user.id}`;
 // Create an express app
 const app = express();
 // Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
-// Parse request body and verifies incoming requests using discord-interactions package
-app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-// Store for in-progress games. In production, you'd want to use a DB
+// Store for in-progress games and last claimed rewards
 const activeGames = {};
 const lastClaimedRewards = {};
 
-
-const userInfo = {
-  user: userId,
-  knuts: Number,
-  ytTokens: Number,
-};
+// Parse request body and verifies incoming requests using discord-interactions package
+app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  */
 app.post("/interactions", async function (req, res) {
   // Interaction type and data
-  const { type, id, data } = req.body;
+  const { type, id, data, member } = req.body;
 
   /**
    * Handle verification requests
@@ -59,19 +43,49 @@ app.post("/interactions", async function (req, res) {
 
   /**
    * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
 
-    
-    
-    }
+    if (name === "daily") {
+      const userId = member.user.id;
+      const currentTime = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-  if (type === InteractionType.MESSAGE_COMPONENT) {
-    // custom_id set in payload when sending message component
-    const componentId = data.custom_id;
+      // Check if the user has already claimed their daily reward
+      if (
+        lastClaimedRewards[userId] &&
+        currentTime - lastClaimedRewards[userId] < oneDay
+      ) {
+        // User has already claimed their reward within the last 24 hours
+        const nextRewardTimestamp = Math.floor(
+          (lastClaimedRewards[userId] + oneDay) / 1000
+        );
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
+            flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
+          },
+        });
+      } else {
+        // User has not claimed their reward or it has been more than 24 hours
+        lastClaimedRewards[userId] = currentTime;
+        // Add coins to the user's account here
+        // ...
+
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `You've claimed your daily reward of X knuts!`, // Replace X with the number of knuts you want to give
+          },
+        });
+      }
+    }
   }
+
+  // Handle other interaction types...
 });
 
 app.listen(PORT, () => {
