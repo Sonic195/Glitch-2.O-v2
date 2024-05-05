@@ -69,7 +69,7 @@ const userRewardSchema = new mongoose.Schema({
   userId: String,
   knuts: Number,
   ytTokens: Number,
-  lastClaimed: Number,
+  lastClaimed: Date,
 });
 
 const UserReward = mongoose.model("UserReward", userRewardSchema);
@@ -93,9 +93,22 @@ app.post("/interactions", async function (req, res) {
    * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options } = data;
+    const { name, options, type, member } = data;
 
     if (name === "daily") {
+      
+      const userId = member.user.id;
+      const user = await UserReward.findOne({ userId });
+      
+      if (!user) {
+        
+        await UserReward.create({
+          userId,
+          
+        })
+        
+      }
+      
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         date: {
