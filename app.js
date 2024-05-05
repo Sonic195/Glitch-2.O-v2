@@ -49,10 +49,18 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect(process.env.MONGOOSE_CONNECT, {
+mongoose.connect("mongodb+srv://Joker:Sh%40d0wn1t3195@glitch2o.tqkm8rw.mongodb.net/myapp", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+})
+.then(() => {
+  console.log("Database connected");
+})
+.catch((error) => {
+  console.error("DB error:", error);
+  process.exit(1);
 });
+
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
