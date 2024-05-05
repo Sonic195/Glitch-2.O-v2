@@ -61,9 +61,26 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-    
-    if ()
-    
+
+    if (name === "daily") {
+      
+      const currentTime = Date.now();
+      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Check if the user has already claimed their daily reward
+      if (lastClaimedRewards[userId] && currentTime - lastClaimedRewards[userId] < oneDay) {
+      // User has already claimed their reward within the last 24 hours
+        const timeLeft = oneDay - (currentTime - lastClaimedRewards[userId]);
+        const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+        const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "working on it",
+        },
+      });
+    }
   }
 
   if (type === InteractionType.MESSAGE_COMPONENT) {

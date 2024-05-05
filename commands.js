@@ -257,6 +257,12 @@ const PINGER_COMMAND = {
   type: 1,
 };
 
+const DAILY_COMMAND = {
+  name: "daily",
+  description: "your daily coins",
+  type: 1,
+}
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -268,6 +274,7 @@ const ALL_COMMANDS = [
   PING_COMMAND,
   YOUTUBE_COMMAND,
   PINGER_COMMAND,
+  DAILY_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
