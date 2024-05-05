@@ -96,63 +96,12 @@ app.post("/interactions", async function (req, res) {
     const { name, options } = data;
 
     if (name === "daily") {
-      const userId = member.user.id;
-      const currentTime = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-      // Find the user's reward data in the database
-      UserReward.findOne({ userId: userId }, (err, rewardData) => {
-        if (err) {
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: "An error occurred while fetching reward data.",
-            },
-          });
-        } else if (
-          rewardData &&
-          currentTime - rewardData.lastClaimed < oneDay
-        ) {
-          // User has already claimed their reward within the last 24 hours
-          const nextRewardTimestamp = Math.floor(
-            (rewardData.lastClaimed + oneDay) / 1000
-          );
-
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: `You've already claimed your daily reward. Please wait until <t:${nextRewardTimestamp}:R>.`,
-              flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
-            },
-          });
-        } else {
-          // User has not claimed their reward or it has been more than 24 hours
-          // Update the last claimed timestamp and increment knuts in the database
-          const knutsToAdd = 10; // Set the number of knuts to add
-          UserReward.updateOne(
-            { userId: userId },
-            { $set: { lastClaimed: currentTime }, $inc: { knuts: knutsToAdd } },
-            { upsert: true },
-            (err) => {
-              if (err) {
-                return res.send({
-                  type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                  data: {
-                    content: "An error occurred while updating the reward.",
-                  },
-                });
-              } else {
-                return res.send({
-                  type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-                  data: {
-                    content: `Your daily knuts have been claimed! You received ${knutsToAdd} knuts.`,
-                  },
-                });
-              }
-            }
-          );
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        date: {
+          content: "working on it"
         }
-      });
+      })
     }
 
     if (name === "pinger") {
