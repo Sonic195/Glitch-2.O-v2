@@ -99,8 +99,28 @@ app.post("/interactions", async function (req, res) {
             }
           })
         } else if (rewardData && currentTime - rewardData.lastClaimed < oneDay) {
-          const nextRewardTimestamp = Math.floor((lastClaimedRewards[userId] + oneDay) / 1000);
-          
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "claimed already within the last 24 hours",
+            }
+          })
+        } else {
+          UserReward.updateOne({
+            userId: currentTime 
+          }, { upsert: true }, (err) => {
+            if (err) {
+              return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "error",
+            }
+          })
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "daily claimed!",
         }
       })
       
