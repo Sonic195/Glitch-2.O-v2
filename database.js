@@ -64,9 +64,41 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
 
+    if (name === "daily") {
+    const userId = member.user.id;
+    const currentTime = Date.now();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Check if the user has already claimed their daily reward
+    if (lastClaimedRewards[userId] && currentTime - lastClaimedRewards[userId] < oneDay) {
+      // User has already claimed their reward within the last 24 hours
+      const timeLeft = oneDay - (currentTime - lastClaimedRewards[userId]);
+      const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
+      const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `You've already claimed your daily reward. Please wait ${hoursLeft} hours and ${minutesLeft} minutes.`,
+          flags: InteractionResponseFlags.EPHEMERAL, // Only the user can see this message
+        },
+      });
+    } else {
+      // User has not claimed their reward or it has been more than 24 hours
+      lastClaimedRewards[userId] = currentTime;
+      // Add coins to the user's account here
+      // ...
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `You've claimed your daily reward of X knuts!`,
+          // Replace X with the number of knuts you want to give
+        },
+      }
+                    }
     
     
-    }
 
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
