@@ -74,14 +74,14 @@ app.post("/interactions", async function (req, res) {
         const hoursLeft = Math.floor(timeLeft / (60 * 60 * 1000));
         const minutesLeft = Math.floor((timeLeft % (60 * 60 * 1000)) / (60 * 1000));
       
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "working on it",
-          },
-        }
-                        }
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "working on it",
+        },
+      });
     }
+  }
 
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
