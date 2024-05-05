@@ -23,6 +23,7 @@ import {
   flipper,
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
+import mongoose from 'mongoose';
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -47,6 +48,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
+
+mongoose.connect('mongodb+srv://Joker:<password>@glitch2o.tqkm8rw.mongodb.net/?retryWrites=true&w=majority&appName=Glitch2O')
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
