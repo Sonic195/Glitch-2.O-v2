@@ -154,21 +154,6 @@ app.post("/interactions", async function (req, res) {
       });
     }
 
-    if (name === "announce") {
-      const title = options.find((opt) => opt.name === "title").value;
-      const subTitle = options.find((opt) => opt.name === "sub-title").value;
-      const context = options.find((opt) => opt.name === "context").value;
-      const subTitle2 = options.find((opt) => opt.name === "sub-title2").value;
-      const context2 = options.find((opt) => opt.name === "context2").value;
-      const ps = options.find((opt) => opt.name === "ps").value;
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `# ${title}\n ## ${subTitle}\n${context}\n## ${subTitle2}\n${context2}\n${ps}`,
-        },
-      });
-    }
-
     if (name === "gifify") {
       const query = options[0].value;
       try {
@@ -209,77 +194,7 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-
-    if (name === "caller") {
-      const user = options.find((opt) => opt.name === "user").value;
-      const callType = options.find((opt) => opt.name === "type").value;
-
-      let callMessage = "";
-      switch (callType) {
-        case "1":
-          callMessage = `<@${user}> where are you`;
-          break;
-        case "2":
-          callMessage = `<@${user}> hurry up`;
-          break;
-        case "3":
-          callMessage = `<@${user}> hello??`;
-          break;
-        case "4":
-          callMessage = `<@${user}> come online`;
-          break;
-        case "5":
-          callMessage = `<@${user}> you suck`;
-      }
-
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: callMessage,
-        },
-      });
-    }
-
-    if (name === "image") {
-      const query = options[0].value;
-      try {
-        const response = await fetch(
-          `https://api.pexels.com/v1/search?query=${encodeURIComponent(
-            query
-          )}&per_page=1`,
-          {
-            headers: {
-              Authorization: process.env.PEXELS_API_KEY, // Use the API key from the environment variable
-            },
-          }
-        );
-        const data = await response.json();
-        if (data && data.photos.length > 0) {
-          const imageUrl = data.photos[0].src.original;
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: imageUrl,
-            },
-          });
-        } else {
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: "No images found for your query.",
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching from Pexels API:", error);
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "An error occurred while fetching images.",
-          },
-        });
-      }
-    }
+    
 
     // "test" command
     if (name === "test") {
@@ -289,16 +204,6 @@ app.post("/interactions", async function (req, res) {
         data: {
           // Fetches a random emoji to send from a helper function
           content: "hello world " + getRandomEmoji(),
-        },
-      });
-    }
-    if (name === "glitcher") {
-      // Send a message into the channel where command was triggered from
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          // Fetches a random emoji to send from a helper function
-          content: "success",
         },
       });
     }
