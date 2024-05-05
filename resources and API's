@@ -51,6 +51,3 @@ app.post("/interactions", async function (req, res) {
     }
     
 /announce title:Glitch 2.O sub-title:The Bot context:This is a bot that’s under development. Expect a game system soon. Current features include using YouTube API services to anonymously access YouTube without google tracing you, NASA’s image of the day, a simple ping-pong game, and much much more. It’s very hard to make API calls while keeping the bot up and running. There’s a very small request - $2 for lifetime usage (I’m broke). I’ll appreciate it very much.
-
-
-mongodb+srv://Joker:<password>@glitch2o.tqkm8rw.mongodb.net/?retryWrites=true&w=majority&appName=Glitch2O
