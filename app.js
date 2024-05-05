@@ -16,6 +16,7 @@ import {
   SlashCommandBuilder,
   AttachmentBuilder,
 } from "discord.js";
+import mongoose from "mongoos";
 import {
   VerifyDiscordRequest,
   getRandomEmoji,
@@ -72,7 +73,7 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options } = data;
-    
+
     if (name === "daily") {
       const userId = member.user.id;
       const currentTime = Date.now();
@@ -108,7 +109,7 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
+
     if (name === "pinger") {
       const startTime = Date.now();
       const latency = Date.now() - startTime;
@@ -231,7 +232,6 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
 
     // "test" command
     if (name === "test") {
