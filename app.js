@@ -49,28 +49,23 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect("mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("Database connected");
-})
-.catch((error) => {
-  console.error("DB error:", error);
-  process.exit(1);
-});
+mongoose
+  .connect(
+    "mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((error) => {
+    console.error("DB error:", error);
+    process.exit(1);
+  });
 
 
-// Store for in-progress games. In production, you'd want to use a DB
-const activeGames = {};
-
-const userRewardSchema = new mongoose.Schema({
-  userId: String,
-  knuts: Number,
-  ytTokens: Number,
-  lastClaimed: Number,
-});
 
 const UserReward = mongoose.model("UserReward", userRewardSchema);
 
