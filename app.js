@@ -49,18 +49,17 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-mongoose.connect("mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => {
-  console.log("Database connected");
-})
-.catch((error) => {
-  console.error("DB error:", error);
-  process.exit(1);
-});
-
+mongoose
+  .connect(
+    "mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/",
+  )
+  .then(() => {
+    console.log("Database connected");
+  })
+  .catch((error) => {
+    console.error("DB error:", error);
+    process.exit(1);
+  });
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
@@ -96,25 +95,22 @@ app.post("/interactions", async function (req, res) {
     const { name, options, type, member } = data;
 
     if (name === "daily") {
-      
       const userId = member.user.id;
       const user = await UserReward.findOne({ userId });
-      
+
       if (!user) {
-        
         await UserReward.create({
           userId,
           lastClaimed: new Date(),
-        })
-        
+        });
       }
-      
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         date: {
-          content: "working on it"
-        }
-      })
+          content: "working on it",
+        },
+      });
     }
 
     if (name === "pinger") {
