@@ -265,13 +265,13 @@ app.post("/interactions", async function (req, res) {
     // "test" command
     if (name === "test") {
       // embed test
-      const testEmbded = new EmbedBuilder()
-        .setColour(0x0099ff)
+      const testEmbed = new EmbedBuilder()
+        .setColor(0x0099ff)
         .setTitle("Test")
         .setURL("https://discord.js.org/")
         .setAuthor({
           name: "Glitch 2.O",
-          iconURL: "https://i.imgur.com/AfFp7pu.png",
+          icon_URL: "https://i.imgur.com/AfFp7pu.png",
           url: "https://discord.js.org",
         })
         .setDescription("testing embed")
