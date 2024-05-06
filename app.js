@@ -66,8 +66,8 @@ const activeGames = {};
 
 const userRewardSchema = new mongoose.Schema({
   userId: String,
-  glitches: 100,
-  ytTokens: 5,
+  glitches: Number,
+  ytTokens: Number,
   lastClaimed: Date,
 });
 
@@ -92,7 +92,7 @@ app.post("/interactions", async function (req, res) {
    * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options, type, member } = data;
+    const { name, options, type, member, user } = data;
 
     if (name === "reg") {
       const userId = member.user.id;
