@@ -51,7 +51,7 @@ app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 mongoose
   .connect(
-    "mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/",
+    "mongodb+srv://shadownite:Shad0wn1t3195@glitch2o.tqkm8rw.mongodb.net/"
   )
   .then(() => {
     console.log("Database connected");
@@ -66,13 +66,12 @@ const activeGames = {};
 
 const userRewardSchema = new mongoose.Schema({
   userId: String,
-  knuts: Number,
-  ytTokens: Number,
+  glitches: 100,
+  ytTokens: 5,
   lastClaimed: Date,
 });
 
 const UserReward = mongoose.model("UserReward", userRewardSchema);
-
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -94,28 +93,30 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member } = data;
-    
+
     if (name === "reg") {
       const userId = member.user.id;
       const user = await UserReward.findOne({ userId });
       if (!user) {
         await UserReward.create({
           userId,
-          glitches: Number,
+          glitches: 100,
+          ytTokens: 5,
           lastClaimed: new Date(),
-        })
-      } return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        date: {
-          content: `registered as ${userId}`,
-        }
-      }) else {
+        });
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          date: {
-            content: "user already registered",
-          }
-        })
+          data: {
+            content: `Registered as ${userId}`,
+          },
+        });
+      } else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "User already registered",
+          },
+        });
       }
     }
 

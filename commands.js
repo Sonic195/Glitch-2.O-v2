@@ -81,18 +81,18 @@ const COINFLIP_COMMAND = {
   type: 1,
   options: [
     {
-      name: "biasness",
-      description: "wink",
+      name: "bet",
+      description: "bet some glitches flipping the coin",
       type: 3,
       required: false,
       choices: [
         {
-          name: "heads",
-          value: "heads",
+          name: "low risk low reward",
+          value: "lrlr",
         },
         {
-          name: "tails",
-          value: "tails",
+          name: "high risk high reward",
+          value: "hrhr",
         },
       ],
     },
@@ -111,62 +111,6 @@ const IOTD_COMMAND = {
   type: 1,
 };
 
-const IMAGE_COMMAND = {
-  name: "image",
-  description: "search for image",
-  type: 1,
-  options: [
-    {
-      name: "search",
-      description: "search for image",
-      type: 3,
-      required: true
-    }
-  ]
-};
-
-const CALLER_COMMAND = {
-  name: "caller",
-  description: "@ a user",
-  type: 1,
-  options: [
-    {
-      name: "user",
-      description: "who to @",
-      type: 6,
-      required: true,
-    },
-    {
-      name: "type",
-      description: "type of call",
-      type: 3,
-      required: true,
-      choices: [
-        {
-          name: "where are you",
-          value: "1",
-        },
-        {
-          name: "hurry up",
-          value: "2",
-        },
-        {
-          name: "hello??",
-          value: "3",
-        },
-        {
-          name: "come online",
-          value: "4",
-        },
-        {
-          name: "you suck",
-          value: "5",
-        }
-      ]
-    }
-  ]
-}
-
 const GIF_COMMAND = {
   name: "gifify",
   description: "find gifs",
@@ -180,50 +124,6 @@ const GIF_COMMAND = {
     }
   ]
 };
-
-const ANNOUNCE_COMMAND = {
-  name: "announce",
-  description: "make an announcement",
-  type: 1,
-  options: [
-    {
-      name: "title",
-      description: "title of announcement",
-      type: 3,
-      required: true,
-    },
-    {
-      name: "sub-title",
-      description: "sub title of announcement",
-      type: 3,
-      required: false,
-    },
-    {
-      name: "context",
-      description: "context of announcement",
-      type: 3,
-      required: false,
-    },
-    {
-      name: "sub-title2",
-      description: "sub title of announcement",
-      type: 3,
-      required: false,
-    },
-    {
-      name: "context2",
-      description: "context of announcement",
-      type: 3,
-      required: false,
-    },
-    {
-      name: "ps",
-      description: "add a ps",
-      type: 3,
-      required: false,
-    }
-  ]
-}
 
 const PING_COMMAND = {
   name: "ping",
@@ -263,6 +163,12 @@ const DAILY_COMMAND = {
   type: 1,
 }
 
+const REG_COMMAND = {
+  name: "reg",
+  description: "register to the bot if you havent yet",
+  type: 1,
+}
+
 
 const ALL_COMMANDS = [
   TEST_COMMAND,
@@ -275,6 +181,7 @@ const ALL_COMMANDS = [
   YOUTUBE_COMMAND,
   PINGER_COMMAND,
   DAILY_COMMAND,
+  REG_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
