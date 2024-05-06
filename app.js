@@ -73,6 +73,7 @@ const userRewardSchema = new mongoose.Schema({
 
 const UserReward = mongoose.model("UserReward", userRewardSchema);
 
+
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
  */
@@ -93,11 +94,34 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member } = data;
+    
+    if (name === "reg") {
+      const userId = member.user.id;
+      const user = await UserReward.findOne({ userId });
+      if (!user) {
+        await UserReward.create({
+          userId,
+          glitches: Number,
+          lastClaimed: new Date(),
+        })
+      } return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        date: {
+          content: `registered as ${userId}`,
+        }
+      }) else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          date: {
+            content: "user already registered",
+          }
+        })
+      }
+    }
 
     if (name === "daily") {
       const userId = member.user.id;
       const user = await UserReward.findOne({ userId });
-
       if (!user) {
         await UserReward.create({
           userId,
