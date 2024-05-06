@@ -15,6 +15,7 @@ import {
   Routes,
   SlashCommandBuilder,
   AttachmentBuilder,
+  EmbedBuilder,
 } from "discord.js";
 import {
   VerifyDiscordRequest,
@@ -263,6 +264,10 @@ app.post("/interactions", async function (req, res) {
 
     // "test" command
     if (name === "test") {
+      // embed test
+      const testEmbded = new EmbedBuilder()
+      .setColour(0x0099FF)
+      .setTitle('Test')
       // Send a message into the channel where command was triggered from
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
