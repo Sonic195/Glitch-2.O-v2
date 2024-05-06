@@ -32,3 +32,5 @@ import { EmbedBuilder } from "discord.js";
     text: "Some footer text here",
     iconURL: "https://i.imgur.com/AfFp7pu.png",
   });
+
+export const regEmbed = new EmbedBuilder().setColor(0)
