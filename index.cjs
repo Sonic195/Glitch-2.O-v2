@@ -86,7 +86,7 @@ client.on("messageCreate", (message) => {
 
 client.on("messageCreate", (message) => {
   if (message.content.toLowerCase() === "mew") {
-    message.reply(狼);
+    message.reply("🤫🧏");
   }
 });
 
