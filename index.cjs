@@ -67,7 +67,7 @@ function rizzer() {
 }
 
 client.on("messageCreate", (message) => {
-  if (message.content.toLowerCase() === "skibidi",) {
+  if (message.content.toLowerCase() === "skibidi") {
     message.reply(rizzer());
   }
 });
