@@ -61,9 +61,14 @@ client.on("messageCreate", async (message) => {
   }
 });
 
+function rizzer() {
+  const rizz = ['skibidi', 'rizz', 'fanum tax', 'gyatt', 'does it grip?', 'ohio'];
+  return rizz[Math.floor(Math.random() * rizz.length)];
+}
+
 client.on("messageCreate", (message) => {
-  if (message.content.toLowerCase() === "party") {
-    message.reply("ALVIN");
+  if (message.content.toLowerCase() === "skibidi", "ohio", "rizz", "fanum") {
+    message.reply(rizzer());
   }
 });
 
