@@ -62,7 +62,7 @@ client.on("messageCreate", async (message) => {
 });
 
 function rizzer() {
-  const rizz = ['skibidi', 'rizz', 'fanum tax', 'gyatt', 'does it grip?', 'ohio'];
+  const rizz = ['skibidi', 'rizz', 'fanum tax', 'gyatt', 'does it grip?', 'ohio', 'sigma'];
   return rizz[Math.floor(Math.random() * rizz.length)];
 }
 
@@ -73,8 +73,32 @@ client.on("messageCreate", (message) => {
 });
 
 client.on("messageCreate", (message) => {
+  if (message.content.toLowerCase() === "ohio") {
+    message.reply(rizzer());
+  }
+});
+
+client.on("messageCreate", (message) => {
+  if (message.content.toLowerCase() === "sigma") {
+    message.reply(rizzer());
+  }
+});
+
+client.on("messageCreate", (message) => {
+  if (message.content.toLowerCase() === "mew") {
+    message.reply(狼);
+  }
+});
+
+client.on("messageCreate", (message) => {
   if (message.content.toLowerCase() === "cheer") {
     message.reply("INDIA, INDIA ");
+  }
+});
+
+client.on("messageCreate", (message) => {
+  if (message.content.toLowerCase() === "fanum") {
+    message.reply(rizzer());
   }
 });
 
