@@ -176,12 +176,12 @@ app.post("/interactions", async function (req, res) {
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
 
           const ytEmbed = new EmbedBuilder()
-            .setTitle("YouTube")
-            .setDescription("what to watch...")
-            .setColor("#39FF14")
+            .setTitle('YouTube')
+            .setDescription('what to watch...')
+            .setColor('#39FF14')
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setThumbnail(videoThumbnailUrl)
-            .addField("Title", videoTitle, false);
+            .addField('Title', videoTitle, false);
 
 
           const row = {
