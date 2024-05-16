@@ -190,12 +190,6 @@ app.post("/interactions", async function (req, res) {
                 label: "Next Video",
                 style: 1, // Style 1 is for PRIMARY
               },
-              {
-                type: 2,
-                custom_id: "prevVid",
-                label: "Previous Video",
-                style: 1,
-              },
             ],
           };
 
@@ -405,7 +399,7 @@ app.post("/interactions", async function (req, res) {
     if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
       
-      
+      const url = `https://www.youtube.com/watch?v=${videoId}`
     }
 
     if (componentId.startsWith("ping_pong_button")) {
