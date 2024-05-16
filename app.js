@@ -181,7 +181,9 @@ app.post("/interactions", async function (req, res) {
             .setDescription("what to watch...")
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setThumbnail(videoThumbnailUrl)
-            .addField('Title', videoTitle, false);
+            .addField(
+              {name: videoData }
+            )
 
 
           const row = {
