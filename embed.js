@@ -33,4 +33,6 @@ export const testEmbed = new EmbedBuilder()
     iconURL: "https://i.imgur.com/AfFp7pu.png",
   });
 
-export const ytEmbed = new EmbedBuilder().setColor(0).setTitle("YouTube");
+export const ytEmbed = new EmbedBuilder()
+.setColor(0)
+.setTitle("YouTube");
