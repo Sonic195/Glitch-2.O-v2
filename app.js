@@ -17,8 +17,6 @@ import {
   AttachmentBuilder,
   EmbedBuilder,
   MessageEmbed,
-  MessageActionRow,
-  MessageButton
 } from "discord.js";
 import {
   VerifyDiscordRequest,
@@ -174,22 +172,27 @@ app.post("/interactions", async function (req, res) {
           const videoId = data.items[0].id.videoId;
           const videoTitle = data.items[0].snippet.title;
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
-          
+
           const ytEmbed = new MessageEmbed()
-          .setTitle("YouTube")
-          .setDescription("what to watch...")
-          .setColor("#39FF14")
-          .setURL(`https://www.youtube.com/watch?v=${videoId}`)
-          .setThumbnail(videoThumbnailUrl)
-          .addField('Title', videoTitle, false);
-          
-          const row = new MessageActionRow()
-          .addComponents(
-          new MessageButton()
-          .setCustomId('next_video').setLabel('Next Video').setStyle('SUCCESS'),
-          new MessageButton()
-          .setCustomId('previous_video').setLabel('Previous Video').setStyle('DANGER')
-          );
+            .setTitle("YouTube")
+            .setDescription("what to watch...")
+            .setColor("#39FF14")
+            .setURL(`https://www.youtube.com/watch?v=${videoId}`)
+            .setThumbnail(videoThumbnailUrl)
+            .addField("Title", videoTitle, false);
+
+
+          const row = {
+            type: 1, // Type 1 is for ACTION_ROW
+            components: [
+              {
+                type: 2, // Type 2 is for BUTTON
+                custom_id: "ping_pong_button",
+                label: "Ping 🏓",
+                style: 1, // Style 1 is for PRIMARY
+              },
+            ],
+          };
 
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
