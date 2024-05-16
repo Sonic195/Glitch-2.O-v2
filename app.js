@@ -181,7 +181,7 @@ app.post("/interactions", async function (req, res) {
             .setColor('#39FF14')
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setThumbnail(videoThumbnailUrl)
-            .addField('Title', videoTitle, false);
+            .addField('Title', videoTitle, true);
 
 
           const row = {
