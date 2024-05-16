@@ -16,6 +16,9 @@ import {
   SlashCommandBuilder,
   AttachmentBuilder,
   EmbedBuilder,
+  MessageEmbed,
+  MessageActionRow,
+  MessageButton
 } from "discord.js";
 import {
   VerifyDiscordRequest,
@@ -169,14 +172,30 @@ app.post("/interactions", async function (req, res) {
         const data = await response.json();
         if (data && data.items.length > 0) {
           const videoId = data.items[0].id.videoId;
-          const videoUrls = data.items
-            .map((item) => `https://www.youtube.com/watch?v=${item.id.videoId}`)
-            .join("\n");
+          const videoTitle = data.items[0].snippet.title;
+          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
+          
+          const ytEmbed = new MessageEmbed()
+          .setTitle("YouTube")
+          .setDescription("what to watch...")
+          .setColor("#39FF14")
+          .setURL(`https://www.youtube.com/watch?v=${videoId}`)
+          .setThumbnail(videoThumbnailUrl)
+          .addField('Title', videoTitle, false);
+          
+          const row = new MessageActionRow()
+          .addComponents(
+          new MessageButton()
+          .setCustomId('next_video').setLabel('Next Video').setStyle('SUCCESS'),
+          new MessageButton()
+          .setCustomId('previous_video').setLabel('Previous Video').setStyle('DANGER')
+          );
 
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
-              content: videoUrls,
+              embeds: [ytEmbed],
+              components: [row],
             },
           });
         } else {
