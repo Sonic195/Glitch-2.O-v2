@@ -1,6 +1,6 @@
 import { EmbedBuilder } from "discord.js";
 
- export const testEmbed = new EmbedBuilder()
+export const testEmbed = new EmbedBuilder()
   .setColor(0x0099ff)
   .setTitle("Test")
   .setURL("https://discord.js.org/")
@@ -33,4 +33,4 @@ import { EmbedBuilder } from "discord.js";
     iconURL: "https://i.imgur.com/AfFp7pu.png",
   });
 
-export const regEmbed = new EmbedBuilder().setColor(0)
+export const ytEmbed = new EmbedBuilder().setColor(0).setTitle("YouTube");
