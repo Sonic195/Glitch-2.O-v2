@@ -25,7 +25,7 @@ import {
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
-import { testEmbed, } from "./embed.js";
+import { testEmbed, ytEmbed } from "./embed.js";
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -154,13 +154,12 @@ app.post("/interactions", async function (req, res) {
     }
     if (name === "youtube") {
       const query = options[0].value;
-      const maxVideos = options.find((opt) => opt.name === "videos").value;
 
       try {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
             query
-          )}&maxResults=${maxVideos}&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          )}&maxResults=&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
           {
             headers: {
               Accept: "application/json",
@@ -178,6 +177,7 @@ app.post("/interactions", async function (req, res) {
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: videoUrls,
+              embeds: [ytEmbed],
             },
           });
         } else {

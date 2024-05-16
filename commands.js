@@ -144,9 +144,9 @@ const YOUTUBE_COMMAND = {
     },
     {
       name: "videos",
-      description: "number of vids for the request. must be single digit and < 0.",
+      description: "this doesnt do anything rn",
       type: 4,
-      required: true,
+      required: false,
     }
   ]
 }
