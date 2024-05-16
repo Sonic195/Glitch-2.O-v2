@@ -16,7 +16,6 @@ import {
   SlashCommandBuilder,
   AttachmentBuilder,
   EmbedBuilder,
-  MessageEmbed,
 } from "discord.js";
 import {
   VerifyDiscordRequest,
@@ -173,7 +172,7 @@ app.post("/interactions", async function (req, res) {
           const videoTitle = data.items[0].snippet.title;
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
 
-          const ytEmbed = new MessageEmbed()
+          const ytEmbed = new EmbedBuilder()
             .setTitle("YouTube")
             .setDescription("what to watch...")
             .setColor("#39FF14")
@@ -187,9 +186,15 @@ app.post("/interactions", async function (req, res) {
             components: [
               {
                 type: 2, // Type 2 is for BUTTON
-                custom_id: "ping_pong_button",
-                label: "Ping 🏓",
+                custom_id: "nextVid",
+                label: "Next Video",
                 style: 1, // Style 1 is for PRIMARY
+              },
+              {
+                type: 2,
+                custom_id: "prevVid",
+                label: "Previous Video",
+                style: 1,
               },
             ],
           };
@@ -396,6 +401,12 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
+    
+    if (componentId.startsWith("nextVid")) {
+      const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
+      
+      
+    }
 
     if (componentId.startsWith("ping_pong_button")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
