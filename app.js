@@ -154,12 +154,15 @@ app.post("/interactions", async function (req, res) {
     }
     if (name === "youtube") {
       const query = options[0].value;
+      const videoIndex = 0
+      let videoData = [];
+      
 
       try {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
             query
-          )}&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
           {
             headers: {
               Accept: "application/json",
