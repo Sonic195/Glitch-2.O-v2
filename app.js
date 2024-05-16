@@ -159,7 +159,7 @@ app.post("/interactions", async function (req, res) {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
             query
-          )}&maxResults=&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          )}&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
           {
             headers: {
               Accept: "application/json",
@@ -177,7 +177,6 @@ app.post("/interactions", async function (req, res) {
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: videoUrls,
-              embeds: [ytEmbed],
             },
           });
         } else {
