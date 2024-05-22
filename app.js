@@ -154,9 +154,8 @@ app.post("/interactions", async function (req, res) {
     }
     if (name === "youtube") {
       const query = options[0].value;
-      const videoIndex = 0
+      const videoIndex = 0;
       let videoData = [];
-      
 
       try {
         const response = await fetch(
@@ -181,10 +180,9 @@ app.post("/interactions", async function (req, res) {
             .setDescription("what to watch...")
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setThumbnail(videoThumbnailUrl)
-            .addField(
-              {name: videoData }
-            )
-
+            .addField({
+              name: `${videoData}`, value: "Video",
+            });
 
           const row = {
             type: 1, // Type 1 is for ACTION_ROW
@@ -400,11 +398,11 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
-    
+
     if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
-      
-      const url = `https://www.youtube.com/watch?v=${videoId}`
+
+      const url = `https://www.youtube.com/watch?v=${videoId}`;
     }
 
     if (componentId.startsWith("ping_pong_button")) {
