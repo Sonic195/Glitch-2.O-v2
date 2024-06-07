@@ -175,13 +175,40 @@ app.post("/interactions", async function (req, res) {
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
 
           const ytEmbed = new EmbedBuilder()
-            .setColor(0x3914ff)
-            .setTitle("YouTube")
-            .setDescription("what to watch...")
-            .setURL(`https://www.youtube.com/watch?v=${videoId}`)
-            .setThumbnail(videoThumbnailUrl)
-            .addField({
-              name: `${videoData}`, value: "Video",
+            .setColor(0x0099ff)
+            .setTitle("Test")
+            .setURL("https://discord.js.org/")
+            .setAuthor({
+              name: "Glitch 2.O",
+              icon_URL: "https://i.imgur.com/AfFp7pu.png",
+              url: "https://discord.js.org",
+            })
+            .setDescription("testing embed")
+            .setThumbnail("https://i.imgur.com/AfFp7pu.png")
+            .addFields(
+              { name: "Regular field title", value: "Some value here" },
+              { name: "\\u200B", value: "\\u200B" },
+              {
+                name: "Inline field title",
+                value: "Some value here",
+                inline: true,
+              },
+              {
+                name: "Inline field title",
+                value: "Some value here",
+                inline: true,
+              }
+            )
+            .addFields({
+              name: "Inline field title",
+              value: "Some value here",
+              inline: true,
+            })
+            .setImage("https://i.imgur.com/AfFp7pu.png")
+            .setTimestamp()
+            .setFooter({
+              text: "Some footer text here",
+              iconURL: "https://i.imgur.com/AfFp7pu.png",
             });
 
           const row = {
