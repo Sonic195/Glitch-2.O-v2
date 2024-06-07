@@ -175,7 +175,7 @@ app.post("/interactions", async function (req, res) {
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
 
           const ytEmbed = new EmbedBuilder()
-            .setColor(0x39FF14)
+            .setColor('Random')
             .setTitle(`${videoTitle}`)
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setAuthor({
@@ -188,7 +188,6 @@ app.post("/interactions", async function (req, res) {
             .addFields(
               { name: "Amount of Glitchos left", value: "working on it" },
             )
-            .setVideo(`https://www.youtube.com/watch?v=${videoId}`)
             .setTimestamp()
             .setFooter({
               text: "Some footer text here",
