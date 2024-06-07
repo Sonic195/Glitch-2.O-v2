@@ -176,18 +176,18 @@ app.post("/interactions", async function (req, res) {
 
           const ytEmbed = new EmbedBuilder()
             .setColor(0x0099ff)
-            .setTitle("Test")
-            .setURL("https://discord.js.org/")
+            .setTitle(`${videoTitle}`)
+            .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setAuthor({
               name: "Glitch 2.O",
               icon_URL: "https://i.imgur.com/AfFp7pu.png",
               url: "https://discord.js.org",
             })
-            .setDescription("testing embed")
-            .setThumbnail("https://i.imgur.com/AfFp7pu.png")
+            .setDescription("go get some popcorn")
+            .setThumbnail(`${videoThumbnailUrl}`)
             .addFields(
-              { name: "Regular field title", value: "Some value here" },
-              { name: "\\u200B", value: "\\u200B" },
+              { name: "Amount of Glitchos left", value: "working on it" },
+  
               {
                 name: "Inline field title",
                 value: "Some value here",
