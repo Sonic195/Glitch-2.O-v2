@@ -5,3 +5,4 @@ let testSchema = new Schema({
 })
 
 module.exports = model('testSchema', test)
+export {testSchema}

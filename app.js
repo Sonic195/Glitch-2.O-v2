@@ -26,7 +26,6 @@ import {
 import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
 import { testEmbed, ytEmbed } from "./embed.js";
-import { testSchema } from "./Schema.js"
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
