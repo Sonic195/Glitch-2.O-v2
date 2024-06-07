@@ -213,7 +213,13 @@ app.post("/interactions", async function (req, res) {
               embeds: [ytEmbed],
               components: [row],
             },
-          });
+          }).then(() => { return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `https://www.youtube.com/watch?v=${videoId}`,
+            }
+          })
+            )
           
         } else {
           return res.send({
