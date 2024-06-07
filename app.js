@@ -411,7 +411,7 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const { componentId, options } = data.custom_id;
 
-    if (componentId === ("nextVid")) {
+    if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
       const query = options[0].value;
@@ -456,7 +456,7 @@ app.post("/interactions", async function (req, res) {
       
     }
 
-    if (componentId === ("ping_pong_button")) {
+    if (componentId.startsWith("ping_pong_button")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
       const pingPong = ["ping", "miss"];
@@ -490,7 +490,7 @@ app.post("/interactions", async function (req, res) {
       }
     }
 
-    if (componentId === ("accept_button_")) {
+    if (componentId.startsWith("accept_button_")) {
       // get the associated game ID
       const gameId = componentId.replace("accept_button_", "");
       // Delete message with token in request body
@@ -522,7 +522,7 @@ app.post("/interactions", async function (req, res) {
       } catch (err) {
         console.error("Error sending message:", err);
       }
-    } else if (componentId === ("select_choice_")) {
+    } else if (componentId.startsWith("select_choice_")) {
       // get the associated game ID
       const gameId = componentId.replace("select_choice_", "");
 
