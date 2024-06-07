@@ -211,7 +211,7 @@ app.post("/interactions", async function (req, res) {
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: `https://www.youtube.com/watch?v=${videoId}`,
-              
+              embeds: [ytEmbed],
               components: [row],
             },
           });
@@ -414,7 +414,37 @@ app.post("/interactions", async function (req, res) {
     if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
-      const url = `https://www.youtube.com/watch?v=${videoId}`;
+      const query = options[0].value;
+      const videoIndex = 0;
+      let videoData = [];
+
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+            query
+          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data && data.items.length > 0) {
+          const videoId = data.items[0].id.videoId;
+          const videoTitle = data.items[0].snippet.title;
+          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
+          const url = `https://www.youtube.com/watch?v=${videoId}`;
+          
+          return res.send({
+          type: InteractionResponseType.UPDATE_MESSAGE,
+          data: {
+            content: `missed\nStreak has been reset.`,
+            components: endpoint.components, // Keep the original components
+          },
+        });
+        }
+      }
     }
 
     if (componentId.startsWith("ping_pong_button")) {
