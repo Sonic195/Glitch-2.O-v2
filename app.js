@@ -181,7 +181,8 @@ app.post("/interactions", async function (req, res) {
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setThumbnail(videoThumbnailUrl)
             .addField({
-              name: `${videoData}`, value: "Video",
+              name: `${videoData}`,
+              value: "Video",
             });
 
           const row = {
@@ -507,6 +508,97 @@ app.post("/interactions", async function (req, res) {
         } catch (err) {
           console.error("Error sending message:", err);
         }
+      }
+    }
+  }
+});
+
+app.post("/interactions", async function (req, res) {
+  // Interaction type and data
+  const { type, id, data, member } = req.body;
+
+  /**
+   * Handle verification requests
+   */
+  if (type === InteractionType.PING) {
+    return res.send({ type: InteractionResponseType.PONG });
+  }
+
+  /**
+   * Handle slash command requests
+   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
+   */
+  if (type === InteractionType.APPLICATION_COMMAND) {
+    const { name, options, type, member, user } = data;
+
+    if (name === "youtube") {
+      const query = options[0].value;
+      const videoIndex = 0;
+      let videoData = [];
+
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+            query
+          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data && data.items.length > 0) {
+          const videoId = data.items[0].id.videoId;
+          const videoTitle = data.items[0].snippet.title;
+          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
+
+          const ytEmbed = new EmbedBuilder()
+            .setColor(0x3914ff)
+            .setTitle("YouTube")
+            .setDescription("what to watch...")
+            .setURL(`https://www.youtube.com/watch?v=${videoId}`)
+            .setThumbnail(videoThumbnailUrl)
+            .addField({
+              name: `${videoData}`,
+              value: "Video",
+            });
+
+          const row = {
+            type: 1, // Type 1 is for ACTION_ROW
+            components: [
+              {
+                type: 2, // Type 2 is for BUTTON
+                custom_id: "nextVid",
+                label: "Next Video",
+                style: 1, // Style 1 is for PRIMARY
+              },
+            ],
+          };
+
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              embeds: [ytEmbed],
+              components: [row],
+            },
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "No videos found for your query.",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching from YouTube API:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching videos.",
+          },
+        });
       }
     }
   }
