@@ -175,7 +175,7 @@ app.post("/interactions", async function (req, res) {
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
 
           const ytEmbed = new EmbedBuilder()
-            .setColor('Random')
+            .setColor("Random")
             .setTitle(`${videoTitle}`)
             .setURL(`https://www.youtube.com/watch?v=${videoId}`)
             .setAuthor({
@@ -185,9 +185,10 @@ app.post("/interactions", async function (req, res) {
             })
             .setDescription("go get some popcorn")
             .setThumbnail(`${videoThumbnailUrl}`)
-            .addFields(
-              { name: "Amount of Glitchos left", value: "working on it" },
-            )
+            .addFields({
+              name: "Amount of Glitchos left",
+              value: "working on it",
+            })
             .setTimestamp()
             .setFooter({
               text: "Some footer text here",
@@ -205,22 +206,15 @@ app.post("/interactions", async function (req, res) {
               },
             ],
           };
-          
+
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: `https://www.youtube.com/watch?v=${videoId}`,
-              embeds: [ytEmbed],
+              
               components: [row],
             },
-          }).then(() => { return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: `https://www.youtube.com/watch?v=${videoId}`,
-            }
-          })
-            )
-          
+          });
         } else {
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
