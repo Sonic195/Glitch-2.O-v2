@@ -74,6 +74,20 @@ app.post("/interactions", async function (req, res) {
               text: "just chillin",
               iconURL: "https://i.imgur.com/AfFp7pu.png",
             });
+      
+      const row = {
+            type: 1, // Type 1 is for ACTION_ROW
+            components: [
+              {
+                type: 4, // Type 2 is for text input
+                title: "what to watch...",
+                custom_id: "search",
+                label: "search",
+                style: 1, // Style 1 is for PRIMARY
+              },
+            ],
+          };
+      
       const query = options[0].value;
       const videoIndex = 0;
       let videoData = [];
@@ -94,18 +108,6 @@ app.post("/interactions", async function (req, res) {
           const videoId = data.items[0].id.videoId;
           const videoTitle = data.items[0].snippet.title;
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
-
-          const row = {
-            type: 1, // Type 1 is for ACTION_ROW
-            components: [
-              {
-                type: 2, // Type 2 is for BUTTON
-                custom_id: "nextVid",
-                label: "Next Video",
-                style: 1, // Style 1 is for PRIMARY
-              },
-            ],
-          };
 
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
