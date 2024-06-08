@@ -153,47 +153,47 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "youtube") {
-      
       const ytEmbed = new EmbedBuilder()
-            .setColor("Random")
-            .setTitle("YouTube")
-            .setURL("https://www.youtube.com/")
-            .setAuthor({
-              name: "Glitch 2.O",
-              icon_URL: "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
-            })
-            .setDescription("go get some popcorn")
-            .setThumbnail("https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897")
-            .addFields({
-              name: "Amount of Glitchos left",
-              value: "working on it",
-            })
-            .setTimestamp()
-            .setFooter({
-              text: "just chillin",
-              iconURL: "https://i.imgur.com/AfFp7pu.png",
-            });
-      
-      
+        .setColor("Random")
+        .setTitle("YouTube")
+        .setURL("https://www.youtube.com/")
+        .setAuthor({
+          name: "Glitch 2.O",
+          icon_URL:
+            "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
+        })
+        .setDescription("go get some popcorn")
+        .setThumbnail(
+          "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
+        )
+        .addFields({
+          name: "Amount of Glitchos left",
+          value: "working on it",
+        })
+        .setTimestamp()
+        .setFooter({
+          text: "just chillin",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
+        });
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              embeds: [ytEmbed],
+        data: {
+          embeds: [ytEmbed],
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: MessageComponentTypes.ACTION_ROW,
-                  components: [
-                    {
-                      type: MessageComponentTypes.TEXT_INPUT,
-                      title: "what to watch...",
-                      custom_id: "search",
-                      label: "search",
-                      
-                    }
-                  ]
-                }
+                  type: MessageComponentTypes.TEXT_INPUT,
+                  title: "what to watch...",
+                  custom_id: "search",
+                  label: "search",
+                },
               ],
             },
+          ],
+        },
       });
     }
 
@@ -331,7 +331,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    
+
     if (name === "challenge" && id) {
       const userId = req.body.member.user.id;
       // User's object choice
@@ -399,14 +399,14 @@ app.post("/interactions", async function (req, res) {
           const videoTitle = data.items[0].snippet.title;
           const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
           const url = `https://www.youtube.com/watch?v=${videoId}`;
-          
+
           return res.send({
             type: InteractionResponseType.UPDATE_MESSAGE,
             data: {
               content: `https://www.youtube.com/watch?v=${videoId}`,
               components: endpoint.components, // Keep the original components
-          },
-        });
+            },
+          });
         }
       } catch (error) {
         console.error("Error fetching from youtube:", error);
@@ -417,7 +417,6 @@ app.post("/interactions", async function (req, res) {
           },
         });
       }
-      
     }
 
     if (componentId.startsWith("ping_pong_button")) {
