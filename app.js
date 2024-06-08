@@ -414,7 +414,7 @@ app.post("/interactions", async function (req, res) {
     if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
-      const query = data.values[0];
+      const query = endpoint.values[0];
       const videoIndex = 0;
       let videoData = [];
 
@@ -437,17 +437,17 @@ app.post("/interactions", async function (req, res) {
           const url = `https://www.youtube.com/watch?v=${videoId}`;
           
           return res.send({
-          type: InteractionResponseType.UPDATE_MESSAGE,
-          data: {
-            content: `missed\nStreak has been reset.`,
-            components: endpoint.components, // Keep the original components
+            type: InteractionResponseType.UPDATE_MESSAGE,
+            data: {
+              content: `https://www.youtube.com/watch?v=${videoId}`,
+              components: endpoint.components, // Keep the original components
           },
         });
         }
       } catch (error) {
         console.error("Error fetching from youtube:", error);
         return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          type: InteractionResponseType.UPDATE_MESSAGE,
           data: {
             content: "An error occurred while fetching the image.",
           },
