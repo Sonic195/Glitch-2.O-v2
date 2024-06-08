@@ -409,12 +409,12 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
-    const { componentId, options } = data.custom_id;
+    const componentId = data.custom_id;
 
     if (componentId.startsWith("nextVid")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
-      const query = options[0].value;
+      const query = data.values[0];
       const videoIndex = 0;
       let videoData = [];
 
