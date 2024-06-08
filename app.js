@@ -368,6 +368,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+    
     if (name === "challenge" && id) {
       const userId = req.body.member.user.id;
       // User's object choice
