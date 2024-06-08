@@ -459,7 +459,7 @@ app.post("/interactions", async function (req, res) {
     if (componentId.startsWith("ping_pong_button")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
-      const pingPong = ["ping", "miss"];
+      const pingPong = ["ping", "ping", "miss"];
       const result = pingPong[Math.floor(Math.random() * pingPong.length)];
       let streaks = 0;
 
