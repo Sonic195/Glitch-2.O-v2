@@ -94,9 +94,9 @@ app.post("/interactions", async function (req, res) {
    * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options, type, member, user } = data;
+    const { name, options, type, member, user, } = data;
 
-    if (data.name === 'text') {
+    if (name === 'text') {
       // Send a modal as response
       return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
