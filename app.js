@@ -173,18 +173,17 @@ app.post("/interactions", async function (req, res) {
         .setTimestamp()
         .setFooter({
           text: "just chillin",
-          iconURL: "https://i.imgur.com/AfFp7pu.png",
+          icon_URL: "https://i.imgur.com/AfFp7pu.png",
         });
 
       const row = {
-        type: 1, // Type 1 is for ACTION_ROW
+        type: 1, 
         components: [
           {
-            type: 4, // Type 2 is for text input
+            type: 3,
             title: "what to watch...",
             custom_id: "search",
             label: "search",
-            style: 1, // Style 1 is for PRIMARY
           },
         ],
       };
