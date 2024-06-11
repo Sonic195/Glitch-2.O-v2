@@ -28,7 +28,6 @@ import mongoose from "mongoose";
 import { testEmbed, ytEmbed } from "./embed.js";
 import { Schema, model } from "mongoose";
 
-
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
 const streaks = {};
@@ -75,7 +74,7 @@ const userRewardSchema = new mongoose.Schema({
   lastClaimed: Date,
 });
 
-const Data = ('./Schema.js')
+const Data = "./Schema.js";
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -138,9 +137,9 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "reg") {
       const userId = member.user.id;
-      const user = await UserReward.findOne({ userId });
+      const user = await Data.findOne({ userId });
       if (!user) {
-        await UserReward.create({
+        await Data.create({
           userId,
           glitches: 100,
           ytTokens: 5,
@@ -163,13 +162,16 @@ app.post("/interactions", async function (req, res) {
     }
 
     if (name === "daily") {
-
-      const user = await data.findOne({ userId });
-      if (!user) {
-        await data.create({
-          userId,
-          lastClaimed: new Date(),
-        });
+      try {
+        const user = await data.findOne({ userId });
+        if (!user) {
+          await data.create({
+            userId,
+            lastClaimed: new Date(),
+          });
+        }
+      } catch (error) {
+        console.error("error with daily:", error);
       }
 
       return res.send({
@@ -396,7 +398,7 @@ app.post("/interactions", async function (req, res) {
     const userId = req.body.member.user.id;
 
     if (modalId.startsWith("youtube_modal")) {
-      let modalValues = '';
+      let modalValues = "";
       // Get value of text inputs
       for (let action of data.components) {
         let inputComponent = action.components[0];
