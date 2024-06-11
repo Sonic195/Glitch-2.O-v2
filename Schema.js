@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const auraSchema = new Schema({
+const dataSchema = new Schema({
   userId: {
     type: String,
     required: true,
@@ -12,7 +12,8 @@ const auraSchema = new Schema({
   level: {
     type: Number,
     default: 0,
-  }
+  },
+  lastClaimed: Date,
 })
 
-module.exports = model('Aura', auraSchema);
+module.exports = model('data', dataSchema);

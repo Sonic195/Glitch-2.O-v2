@@ -162,9 +162,9 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "daily") {
       const userId = member.user.id;
-      const user = await UserReward.findOne({ userId });
+      const user = await data.findOne({ userId });
       if (!user) {
-        await UserReward.create({
+        await data.create({
           userId,
           lastClaimed: new Date(),
         });
