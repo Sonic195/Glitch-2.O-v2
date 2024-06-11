@@ -394,11 +394,11 @@ app.post("/interactions", async function (req, res) {
     const userId = req.body.member.user.id;
 
     if (modalId === "youtube_modal") {
-      let modalValues = "";
+      let modalValues = '';
       // Get value of text inputs
       for (let action of data.components) {
         let inputComponent = action.components[0];
-        modalValues += `${inputComponent.custom_id}\n`;
+        modalValues += `${inputComponent.value}\n`;
       }
 
       return res.send({
