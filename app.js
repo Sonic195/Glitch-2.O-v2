@@ -94,15 +94,15 @@ app.post("/interactions", async function (req, res) {
    * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options, type, member, user, } = data;
+    const { name, options, type, member, user } = data;
 
-    if (name === 'text') {
+    if (name === "text") {
       // Send a modal as response
       return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
         data: {
-          custom_id: 'my_modal',
-          title: 'Modal title',
+          custom_id: "my_modal",
+          title: "Modal title",
           components: [
             {
               // Text inputs must be inside of an action component
@@ -111,9 +111,9 @@ app.post("/interactions", async function (req, res) {
                 {
                   // See https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-structure
                   type: MessageComponentTypes.INPUT_TEXT,
-                  custom_id: 'my_text',
+                  custom_id: "my_text",
                   style: 1,
-                  label: 'Type some text',
+                  label: "Type some text",
                 },
               ],
             },
@@ -122,10 +122,10 @@ app.post("/interactions", async function (req, res) {
               components: [
                 {
                   type: MessageComponentTypes.INPUT_TEXT,
-                  custom_id: 'my_longer_text',
+                  custom_id: "my_longer_text",
                   // Bigger text box for input
                   style: 2,
-                  label: 'Type some (longer) text',
+                  label: "Type some (longer) text",
                 },
               ],
             },
@@ -133,7 +133,6 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-  
 
     if (name === "reg") {
       const userId = member.user.id;
@@ -192,50 +191,25 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "youtube") {
-      const ytEmbed = new EmbedBuilder()
-        .setColor(0xadd8e6)
-        .setTitle("YouTube")
-        .setURL("https://www.youtube.com/")
-        .setAuthor({
-          name: "Glitch 2.O",
-          icon_URL:
-            "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
-        })
-        .setDescription("go get some popcorn")
-        .setThumbnail(
-          "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
-        )
-        .addFields({
-          name: "Amount of Glitchos left",
-          value: "working on it",
-        })
-        .setTimestamp()
-        .setFooter({
-          text: "just chillin",
-          icon_URL: "https://i.imgur.com/AfFp7pu.png",
-        });
-
-      const row = {
-        type: 1,
-        components: [
-          {
-            type: 4,
-            custom_id: "search",
-            label: "Search",
-            style: 1,
-            min_length: 1,
-            max_length: 4000,
-            placeholder: "pokemon",
-            required: true,
-          },
-        ],
-      };
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           embeds: [ytEmbed],
-          components: [row],
+          components: [
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.BUTTON,
+                  // Append the game ID to use later on
+                  custom_id: `accept_button_${req.body.id}`,
+                  label: "Accept",
+                  style: ButtonStyleTypes.PRIMARY,
+                },
+              ],
+            },
+          ],
         },
       });
     }
