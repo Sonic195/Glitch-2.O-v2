@@ -176,25 +176,26 @@ app.post("/interactions", async function (req, res) {
           iconURL: "https://i.imgur.com/AfFp7pu.png",
         });
 
+      const row = {
+        type: 1, // Type 1 is for ACTION_ROW
+        components: [
+          {
+            type: 4, // Type 2 is for text input
+            title: "what to watch...",
+            custom_id: "search",
+            label: "search",
+            style: 1, // Style 1 is for PRIMARY
+          },
+        ],
+      };
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           embeds: [ytEmbed],
-          components: [
-            {
-              type: MessageComponentTypes.ACTION_ROW,
-              components: [
-                {
-                  type: MessageComponentTypes.TEXT_INPUT,
-                  title: "what to watch...",
-                  custom_id: "search",
-                  label: "search",
-                },
-              ],
-            },
-          ],
+          components: [row],
         },
-      }); 
+      });
     }
 
     if (name === "ping") {
