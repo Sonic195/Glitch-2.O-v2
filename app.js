@@ -26,6 +26,8 @@ import {
 import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
 import { testEmbed, ytEmbed } from "./embed.js";
+import { Schema, model } from "mongoose";
+
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -73,7 +75,7 @@ const userRewardSchema = new mongoose.Schema({
   lastClaimed: Date,
 });
 
-const UserReward = mongoose.model("UserReward", userRewardSchema);
+const Data = ('./Schema.js')
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -161,7 +163,7 @@ app.post("/interactions", async function (req, res) {
     }
 
     if (name === "daily") {
-      const userId = member.user.id;
+
       const user = await data.findOne({ userId });
       if (!user) {
         await data.create({

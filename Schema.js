@@ -16,4 +16,4 @@ const dataSchema = new Schema({
   lastClaimed: Date,
 })
 
-module.exports = model('data', dataSchema);
+module.exports = model('Data', dataSchema);
