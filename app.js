@@ -152,14 +152,15 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+
     if (name === "youtube") {
       const ytEmbed = new EmbedBuilder()
-        .setColor("Random")
+        .setColor("#RANDOM") // Use a valid color code
         .setTitle("YouTube")
         .setURL("https://www.youtube.com/")
         .setAuthor({
           name: "Glitch 2.O",
-          icon_URL:
+          iconURL:
             "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
         })
         .setDescription("go get some popcorn")
@@ -177,24 +178,24 @@ app.post("/interactions", async function (req, res) {
         });
 
       return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        type: 4, // CHANNEL_MESSAGE_WITH_SOURCE
         data: {
           embeds: [ytEmbed],
           components: [
             {
-              type: MessageComponentTypes.ACTION_ROW,
+              type: 1, // ACTION_ROW
               components: [
                 {
-                  type: MessageComponentTypes.TEXT_INPUT,
-                  title: "what to watch...",
+                  type: 4, // TEXT_INPUT
                   custom_id: "search",
-                  label: "search",
+                  label: "What to watch...",
+                  style: 1, // SHORT
                 },
               ],
             },
           ],
         },
-      }); 
+      });
     }
 
     if (name === "ping") {
