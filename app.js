@@ -96,26 +96,36 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
 
-    if (name === "text") {
-      // Send a message into the channel where command was triggered from
+    if (data.name === 'text') {
+      // Send a modal as response
       return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        type: InteractionResponseType.APPLICATION_MODAL,
         data: {
-          // Fetches a random emoji to send from a helper function
-          content: "Hello, world! " + getRandomEmoji(),
+          custom_id: 'my_modal',
+          title: 'Modal title',
           components: [
             {
-              type: 1,
+              // Text inputs must be inside of an action component
+              type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: 4,
-                  custom_id: "search",
-                  label: "Search",
+                  // See https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-structure
+                  type: MessageComponentTypes.INPUT_TEXT,
+                  custom_id: 'my_text',
                   style: 1,
-                  min_length: 1,
-                  max_length: 4000,
-                  placeholder: "pokemon",
-                  required: true,
+                  label: 'Type some text',
+                },
+              ],
+            },
+            {
+              type: MessageComponentTypes.ACTION_ROW,
+              components: [
+                {
+                  type: MessageComponentTypes.INPUT_TEXT,
+                  custom_id: 'my_longer_text',
+                  // Bigger text box for input
+                  style: 2,
+                  label: 'Type some (longer) text',
                 },
               ],
             },
@@ -123,6 +133,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+  
 
     if (name === "reg") {
       const userId = member.user.id;
