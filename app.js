@@ -393,7 +393,7 @@ app.post("/interactions", async function (req, res) {
     // user ID of member who filled out modal
     const userId = req.body.member.user.id;
 
-    if (modalId === "youtube_modal") {
+    if (modalId.startsWith("youtube_modal")) {
       let modalValues = '';
       // Get value of text inputs
       for (let action of data.components) {
