@@ -193,8 +193,10 @@ app.post("/interactions", async function (req, res) {
     if (name === "youtube") {
 
       return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        type: InteractionResponseType.APPLICATION_MODAL,
         data: {
+          custom_id: 'youtube_modal',
+          title: 'Search',
           embeds: [ytEmbed],
           components: [
             {
@@ -202,10 +204,9 @@ app.post("/interactions", async function (req, res) {
               components: [
                 {
                   type: MessageComponentTypes.BUTTON,
-                  // Append the game ID to use later on
-                  custom_id: `accept_button_${req.body.id}`,
-                  label: "Accept",
-                  style: ButtonStyleTypes.PRIMARY,
+                  custom_id: 'search',
+                  style: 1,
+                  label: "Search...",
                 },
               ],
             },
