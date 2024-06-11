@@ -34,24 +34,24 @@ export const testEmbed = new EmbedBuilder()
   });
 
 export const ytEmbed = new EmbedBuilder()
-        .setColor(0xadd8e6)
-        .setTitle("YouTube")
-        .setURL("https://www.youtube.com/")
-        .setAuthor({
-          name: "Glitch 2.O",
-          icon_URL:
-            "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
-        })
-        .setDescription("go get some popcorn")
-        .setThumbnail(
-          "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
-        )
-        .addFields({
-          name: "Amount of Glitchos left",
-          value: "working on it",
-        })
-        .setTimestamp()
-        .setFooter({
-          text: "just chillin",
-          icon_URL: "https://i.imgur.com/AfFp7pu.png",
-        });
+  .setColor(0xadd8e6)
+  .setTitle("YouTube")
+  .setURL("https://www.youtube.com/")
+  .setAuthor({
+    name: "Glitch 2.O",
+    icon_URL:
+      "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
+  })
+  .setDescription("go get some popcorn")
+  .setThumbnail(
+    "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
+  )
+  .addFields({
+    name: "Amount of Glitchos left",
+    value: "working on it",
+  })
+  .setTimestamp()
+  .setFooter({
+    text: "just chillin",
+    icon_URL: "https://i.imgur.com/AfFp7pu.png",
+  });
