@@ -96,6 +96,34 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
 
+    if (name === "text") {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: "Hello, world! " + getRandomEmoji(),
+          components: [
+            {
+              type: 1,
+              components: [
+                {
+                  type: 4,
+                  custom_id: "search",
+                  label: "Search",
+                  style: 1,
+                  min_length: 1,
+                  max_length: 4000,
+                  placeholder: "pokemon",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+
     if (name === "reg") {
       const userId = member.user.id;
       const user = await UserReward.findOne({ userId });
@@ -154,7 +182,7 @@ app.post("/interactions", async function (req, res) {
     }
     if (name === "youtube") {
       const ytEmbed = new EmbedBuilder()
-        .setColor(0xADD8E6)
+        .setColor(0xadd8e6)
         .setTitle("YouTube")
         .setURL("https://www.youtube.com/")
         .setAuthor({
@@ -177,7 +205,7 @@ app.post("/interactions", async function (req, res) {
         });
 
       const row = {
-        type: 1, 
+        type: 1,
         components: [
           {
             type: 4,
@@ -187,7 +215,7 @@ app.post("/interactions", async function (req, res) {
             min_length: 1,
             max_length: 4000,
             placeholder: "pokemon",
-            required: true
+            required: true,
           },
         ],
       };

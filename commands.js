@@ -157,7 +157,8 @@ const REG_COMMAND = {
 
 const TEXT_COMMAND = {
   name: "text",
-  description:
+  description: "test",
+  type: 1
 }
 
 const ALL_COMMANDS = [
@@ -172,6 +173,7 @@ const ALL_COMMANDS = [
   PINGER_COMMAND,
   DAILY_COMMAND,
   REG_COMMAND,
+  TEXT_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
