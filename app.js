@@ -191,20 +191,19 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "youtube") {
-
       return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
         data: {
-          custom_id: 'youtube_modal',
-          title: 'Search',
+          custom_id: "youtube_modal",
+          title: "Search",
           embeds: [ytEmbed],
           components: [
             {
               type: MessageComponentTypes.ACTION_ROW,
               components: [
                 {
-                  type: MessageComponentTypes.BUTTON,
-                  custom_id: 'search',
+                  type: MessageComponentTypes.INPUT_TEXT,
+                  custom_id: "search",
                   style: 1,
                   label: "Search...",
                 },
@@ -380,6 +379,32 @@ app.post("/interactions", async function (req, res) {
               ],
             },
           ],
+        },
+      });
+    }
+  }
+
+  /**
+   * Handle modal submissions
+   */
+  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+    // custom_id of modal
+    const modalId = data.custom_id;
+    // user ID of member who filled out modal
+    const userId = req.body.member.user.id;
+
+    if (modalId === "youtube_modal") {
+      let modalValues = "";
+      // Get value of text inputs
+      for (let action of data.components) {
+        let inputComponent = action.components[0];
+        modalValues += `${inputComponent.custom_id}\n`;
+      }
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `<@${userId}> typed the following (in a modal):\n\n${modalValues}`,
         },
       });
     }
