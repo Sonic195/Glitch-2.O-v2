@@ -155,6 +155,10 @@ const REG_COMMAND = {
   type: 1,
 }
 
+const TEXT_COMMAND = {
+  name: "text",
+  description:
+}
 
 const ALL_COMMANDS = [
   TEST_COMMAND,

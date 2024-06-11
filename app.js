@@ -154,7 +154,7 @@ app.post("/interactions", async function (req, res) {
     }
     if (name === "youtube") {
       const ytEmbed = new EmbedBuilder()
-        .setColor("Random")
+        .setColor(0xADD8E6)
         .setTitle("YouTube")
         .setURL("https://www.youtube.com/")
         .setAuthor({
@@ -180,10 +180,14 @@ app.post("/interactions", async function (req, res) {
         type: 1, 
         components: [
           {
-            type: 3,
-            title: "what to watch...",
+            type: 4,
             custom_id: "search",
-            label: "search",
+            label: "Search",
+            style: 1,
+            min_length: 1,
+            max_length: 4000,
+            placeholder: "pokemon",
+            required: true
           },
         ],
       };
@@ -375,7 +379,7 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    if (componentId.startsWith("nextVid")) {
+    if (componentId.startsWith("search")) {
       const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
 
       const query = endpoint.values[0];
