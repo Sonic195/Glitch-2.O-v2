@@ -61,24 +61,5 @@ client.on("messageCreate", async (message) => {
   }
 });
 
-const randomMessages = ["Hello, world!", "I am a bot!", "How are you today?"];
-
-let messageCount = 0;
-const MESSAGE_THRESHOLD = 5;
-
-client.on("message", (msg) => {
-  if (!msg.author.bot) {
-    messageCount++;
-    console.log(`Message count is now: ${messageCount}`); // Log the message count
-  }
-
-  // When message count reaches the threshold, send a random message and reset the counter
-  if (messageCount >= MESSAGE_THRESHOLD) {
-    const randomIndex = Math.floor(Math.random() * randomMessages.length);
-    msg.channel.send(randomMessages[randomIndex]);
-    messageCount = 0; // Reset the counter
-  }
-});
-
 // Login to Discord with your app's token
 client.login(process.env.DISCORD_TOKEN);

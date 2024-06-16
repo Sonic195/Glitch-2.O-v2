@@ -195,7 +195,8 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "youtube") {
-      return res.send({
+      try {
+        return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
         data: {
           custom_id: "youtube_modal",
@@ -216,6 +217,9 @@ app.post("/interactions", async function (req, res) {
           ],
         },
       });
+      } catch (error){
+        console.log('youtube error:', error)
+      }
     }
 
     if (name === "ping") {
