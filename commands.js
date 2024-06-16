@@ -157,8 +157,16 @@ const REG_COMMAND = {
 
 const TEXT_COMMAND = {
   name: "text",
-  description: "test",
-  type: 1
+  description: "make the bot say what you want",
+  type: 1,
+  options: [
+    {
+      name: "input",
+      description: "text",
+      type: 3,
+      required: true,
+    }
+  ]
 }
 
 const ALL_COMMANDS = [
@@ -173,7 +181,7 @@ const ALL_COMMANDS = [
   PINGER_COMMAND,
   DAILY_COMMAND,
   REG_COMMAND,
-  TEXT_COMMAND,
+  TEXT_COMMAMD,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
