@@ -96,6 +96,19 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
+    
+    if (name === "guesser") {
+      
+      function numGetter1() {
+        const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        return num[Math.floor(Math.random() * num.length)];
+      }
+      function numGetter2() {
+        const num = [ "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        return num[Math.floor(Math.random() * num.length)];
+      }
+      
+    }
 
     if (name === "awake") {
       
