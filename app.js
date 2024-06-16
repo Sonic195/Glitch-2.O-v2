@@ -97,10 +97,10 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
 
-    if (name === "text") {
+    if (name === "awake") {
       const text = options[0].value;
       return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITHOUT_SOURCE,
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: `${text}`,
         },

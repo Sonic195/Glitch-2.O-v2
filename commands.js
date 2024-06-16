@@ -155,9 +155,9 @@ const REG_COMMAND = {
   type: 1,
 }
 
-const TEXT_COMMAND = {
-  name: "text",
-  description: "make the bot say what you want",
+const AWAKE_COMMAND = {
+  name: "awake",
+  description: "try to force the bot to come online",
   type: 1,
   options: [
     {
@@ -181,7 +181,7 @@ const ALL_COMMANDS = [
   PINGER_COMMAND,
   DAILY_COMMAND,
   REG_COMMAND,
-  TEXT_COMMAND,
+  AWAKE_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
