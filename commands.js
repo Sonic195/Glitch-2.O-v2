@@ -159,14 +159,6 @@ const AWAKE_COMMAND = {
   name: "awake",
   description: "try to force the bot to come online",
   type: 1,
-  options: [
-    {
-      name: "input",
-      description: "text",
-      type: 3,
-      required: true,
-    }
-  ]
 }
 
 const ALL_COMMANDS = [

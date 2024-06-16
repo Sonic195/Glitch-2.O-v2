@@ -25,7 +25,7 @@ import {
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
-import { testEmbed, ytEmbed } from "./embed.js";
+import { testEmbed, ytEmbed, awakeEmbed} from "./embed.js";
 import { Schema, model } from "mongoose";
 
 // Placeholder for an in-memory storage
@@ -98,11 +98,24 @@ app.post("/interactions", async function (req, res) {
     const { name, options, type, member, user } = data;
 
     if (name === "awake") {
-      const text = options[0].value;
+      
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: `${text}`,
+          embeds: [awakeEmbed],
+          components: [
+            {
+              type: 1,
+              components: [
+                {
+                  type: 2,
+                  custom_id: "awake_button",
+                  style: 2,
+                  label: "Wake Up 💀",
+                }
+              ]
+            }
+          ]
         },
       });
     }
@@ -389,6 +402,16 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
+    
+    if (componentId.startsWith("awake_button")) {
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "the bot is online.",
+          flags: InteractionResponseFlags.EPHEMERAL,
+        }
+      })
+    }
 
     if (componentId.startsWith("search_button")) {
       return res.send({
