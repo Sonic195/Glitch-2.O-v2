@@ -97,6 +97,16 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
 
+    if (name === "text") {
+      const text = options[0].value;
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITHOUT_SOURCE,
+        data: {
+          content: `${text}`,
+        },
+      });
+    }
+
     if (name === "reg") {
       const userId = member.user.id;
       const user = await Data.findOne({ userId });

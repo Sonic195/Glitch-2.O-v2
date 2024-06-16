@@ -181,7 +181,7 @@ const ALL_COMMANDS = [
   PINGER_COMMAND,
   DAILY_COMMAND,
   REG_COMMAND,
-  TEXT_COMMAMD,
+  TEXT_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
