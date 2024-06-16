@@ -548,7 +548,7 @@ app.post("/interactions", async function (req, res) {
     }
   }
 
-  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+  if (type === InteractionType.MODAL_SUBMIT) {
     const modalId = data.custom_id;
 
     if (modalId === "youtube_modal") {
