@@ -55,3 +55,8 @@ export const ytEmbed = new EmbedBuilder()
     text: "just chillin",
     icon_URL: "https://i.imgur.com/AfFp7pu.png",
   });
+
+export const awakeEmbed = new EmbedBuilder()
+.setColor(0x192871)
+.setTitle("Bring The Bot Online")
+.setDescription
