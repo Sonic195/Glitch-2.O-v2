@@ -548,15 +548,14 @@ app.post("/interactions", async function (req, res) {
     }
   }
 
-  if (type === InteractionType.MODAL_SUBMIT) {
+  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
     const modalId = data.custom_id;
 
     if (modalId === "youtube_modal") {
-      let searchQueryComponent = '';
-      for (let action of data.components) {
-        let inputComponent = action.component[0];
-        searchQueryComponent += `${inputComponent.search_query}: ${inputComponent.value}\n`;
-      }
+      const searchQueryComponent =
+        data.components &&
+        data.components[0] &&
+        data.components[0].components[0];
 
       if (searchQueryComponent && searchQueryComponent.value) {
         const userId = req.body.member.user.id;
