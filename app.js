@@ -411,57 +411,6 @@ app.post("/interactions", async function (req, res) {
   }
 
   /**
-   * Handle modal submissions
-   */
-  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
-    const modalId = data.custom_id;
-
-    if (modalId === "youtube_modal") {
-      const userId = req.body.member.user.id;
-      const searchQuery = data.components[0].components[0].value;
-
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-            searchQuery
-          )}&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`,
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-        const responseData = await response.json();
-        if (responseData && responseData.items.length > 0) {
-          const videoId = responseData.items[0].id.videoId;
-
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: `https://www.youtube.com/watch?v=${videoId}`,
-            },
-          });
-        } else {
-          return res.send({
-            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: {
-              content: "No videos found for your query.",
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching from YouTube API:", error);
-        return res.send({
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "An error occurred while fetching videos.",
-          },
-        });
-      }
-    }
-  }
-
-  /**
    * Handle requests from interactive components
    * See https://discord.com/developers/docs/interactions/message-components#responding-to-a-component-interaction
    */
@@ -469,32 +418,28 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    if (type === InteractionType.MESSAGE_COMPONENT) {
-      const customId = data.custom_id;
-
-      if (customId === "search_button") {
-        return res.send({
-          type: InteractionResponseType.MODAL,
-          data: {
-            custom_id: "youtube_modal",
-            title: "Search YouTube",
-            components: [
-              {
-                type: 1, // Action Row
-                components: [
-                  {
-                    type: 4, // Input Text
-                    custom_id: "search_query",
-                    style: 1, // Short
-                    label: "Search...",
-                    required: true,
-                  },
-                ],
-              },
-            ],
-          },
-        });
-      }
+    if (componentId.startsWith("search_button")) {
+      return res.send({
+        type: InteractionResponseType.MODAL,
+        data: {
+          custom_id: "youtube_modal",
+          title: "Search YouTube",
+          components: [
+            {
+              type: 1, // Action Row
+              components: [
+                {
+                  type: 4, // Input Text
+                  custom_id: "search_query",
+                  style: 1, // Short
+                  label: "Search...",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      });
     }
 
     if (componentId.startsWith("ping_pong_button")) {
@@ -599,6 +544,64 @@ app.post("/interactions", async function (req, res) {
         } catch (err) {
           console.error("Error sending message:", err);
         }
+      }
+    }
+  }
+  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+    const modalId = data.custom_id;
+
+    if (modalId === "youtube_modal") {
+      const userId = req.body.member.user.id;
+      const searchQuery = data.components[0].components[0].value;
+
+      // Log the search query to debug
+      console.log("Search query:", searchQuery);
+
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+            searchQuery
+          )}&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`,
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        const responseData = await response.json();
+
+        // Log the API response to debug
+        console.log("YouTube API response:", responseData);
+
+        if (
+          responseData &&
+          responseData.items &&
+          responseData.items.length > 0
+        ) {
+          const videoId = responseData.items[0].id.videoId;
+
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `https://www.youtube.com/watch?v=${videoId}`,
+            },
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "No videos found for your query.",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching from YouTube API:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching videos.",
+          },
+        });
       }
     }
   }
