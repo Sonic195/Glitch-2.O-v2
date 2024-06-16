@@ -25,7 +25,7 @@ import {
 } from "./utils.js";
 import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
-import { testEmbed, ytEmbed, awakeEmbed} from "./embed.js";
+import { testEmbed, ytEmbed, awakeEmbed } from "./embed.js";
 import { Schema, model } from "mongoose";
 
 // Placeholder for an in-memory storage
@@ -96,22 +96,36 @@ app.post("/interactions", async function (req, res) {
    */
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
-    
+
     if (name === "guesser") {
-      
       function numGetter1() {
-        const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
         return num[Math.floor(Math.random() * num.length)];
       }
       function numGetter2() {
-        const num = [ "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+        const num = ["2", "3", "4", "5", "6", "7", "8", "9"];
         return num[Math.floor(Math.random() * num.length)];
       }
+
+      const guesserEmbed = new EmbedBuilder()
+        .setColor(0x818940)
+        .setTitle("Number Guesser")
+        .addFields({
+          name: "Guess if the number is higher or lower than:",
+          value: numGetter2(),
+        });
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          embeds: [guesserEmbed],
+          
+        }
+      })
       
     }
 
     if (name === "awake") {
-      
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -125,10 +139,10 @@ app.post("/interactions", async function (req, res) {
                   custom_id: "awake_button",
                   style: 2,
                   label: "Wake Up 💀",
-                }
-              ]
-            }
-          ]
+                },
+              ],
+            },
+          ],
         },
       });
     }
@@ -415,15 +429,15 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
-    
+
     if (componentId.startsWith("awake_button")) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: "the bot is online.",
           flags: InteractionResponseFlags.EPHEMERAL,
-        }
-      })
+        },
+      });
     }
 
     if (componentId.startsWith("search_button")) {
