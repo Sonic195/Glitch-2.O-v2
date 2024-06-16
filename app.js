@@ -195,8 +195,31 @@ app.post("/interactions", async function (req, res) {
       });
     }
     if (name === "youtube") {
-      try {
-        return res.send({
+      
+      const ytEmbed = new EmbedBuilder()
+        .setColor(0xadd8e6)
+        .setTitle("YouTube")
+        .setURL("https://www.youtube.com/")
+        .setAuthor({
+          name: "Glitch 2.O",
+          icon_URL:
+            "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
+        })
+        .setDescription("go get some popcorn")
+        .setThumbnail(
+          "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
+        )
+        .addFields({
+          name: "Amount of Glitchos left",
+          value: "working on it",
+        })
+        .setTimestamp()
+        .setFooter({
+          text: "just chillin",
+          icon_URL: "https://i.imgur.com/AfFp7pu.png",
+        });
+
+      return res.send({
         type: InteractionResponseType.APPLICATION_MODAL,
         data: {
           custom_id: "youtube_modal",
@@ -217,9 +240,6 @@ app.post("/interactions", async function (req, res) {
           ],
         },
       });
-      } catch (error){
-        console.log('youtube error:', error)
-      }
     }
 
     if (name === "ping") {
@@ -409,12 +429,50 @@ app.post("/interactions", async function (req, res) {
         modalValues += `${inputComponent.value}\n`;
       }
 
-      return res.send({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `<@${userId}> typed the following (in a modal):\n\n${modalValues}`,
-        },
-      });
+      try {
+        const response = await fetch(
+          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
+            modalValues
+          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        if (data && data.items.length > 0) {
+          const videoId = data.items[0].id.videoId;
+          const videoTitle = data.items[0].snippet.title;
+          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
+
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: `https://www.youtube.com/watch?v=${videoId}`,
+            },
+          });
+        } else {
+          return res.send({
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+            data: {
+              content: "No videos found for your query.",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching from YouTube API:", error);
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "An error occurred while fetching videos.",
+          },
+        });
+      }
+    }
+  }
+});
+      
     }
   }
 
