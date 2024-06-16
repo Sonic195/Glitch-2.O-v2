@@ -194,18 +194,18 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+
     if (name === "youtube") {
-      
       const ytEmbed = new EmbedBuilder()
         .setColor(0xadd8e6)
         .setTitle("YouTube")
         .setURL("https://www.youtube.com/")
         .setAuthor({
           name: "Glitch 2.O",
-          icon_URL:
+          iconURL:
             "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897",
         })
-        .setDescription("go get some popcorn")
+        .setDescription("Go get some popcorn")
         .setThumbnail(
           "https://cdn.glitch.global/735481a2-904c-41de-b19a-67260bbf38b2/IMG_0527.jpeg?v=1717832468897"
         )
@@ -216,24 +216,22 @@ app.post("/interactions", async function (req, res) {
         .setTimestamp()
         .setFooter({
           text: "just chillin",
-          icon_URL: "https://i.imgur.com/AfFp7pu.png",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
         });
 
       return res.send({
-        type: InteractionResponseType.APPLICATION_MODAL,
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          custom_id: "youtube_modal",
-          title: "Search",
           embeds: [ytEmbed],
           components: [
             {
-              type: MessageComponentTypes.ACTION_ROW,
+              type: 1, // Action Row
               components: [
                 {
-                  type: MessageComponentTypes.INPUT_TEXT,
-                  custom_id: "search",
-                  style: 1,
-                  label: "Search...",
+                  type: 2, // Button
+                  custom_id: "search_button",
+                  style: 1, // Primary
+                  label: "Search YouTube",
                 },
               ],
             },
@@ -416,35 +414,26 @@ app.post("/interactions", async function (req, res) {
    * Handle modal submissions
    */
   if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
-    // custom_id of modal
     const modalId = data.custom_id;
-    // user ID of member who filled out modal
-    const userId = req.body.member.user.id;
 
-    if (modalId.startsWith("youtube_modal")) {
-      let modalValues = "";
-      // Get value of text inputs
-      for (let action of data.components) {
-        let inputComponent = action.components[0];
-        modalValues += `${inputComponent.value}\n`;
-      }
+    if (modalId === "youtube_modal") {
+      const userId = req.body.member.user.id;
+      const searchQuery = data.components[0].components[0].value;
 
       try {
         const response = await fetch(
           `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-            modalValues
-          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
+            searchQuery
+          )}&maxResults=1&key=${process.env.YOUTUBE_API_KEY}`,
           {
             headers: {
               Accept: "application/json",
             },
           }
         );
-        const data = await response.json();
-        if (data && data.items.length > 0) {
-          const videoId = data.items[0].id.videoId;
-          const videoTitle = data.items[0].snippet.title;
-          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
+        const responseData = await response.json();
+        if (responseData && responseData.items.length > 0) {
+          const videoId = responseData.items[0].id.videoId;
 
           return res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -471,10 +460,6 @@ app.post("/interactions", async function (req, res) {
       }
     }
   }
-});
-      
-    }
-  }
 
   /**
    * Handle requests from interactive components
@@ -484,45 +469,29 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    if (componentId.startsWith("search")) {
-      const endpoint = `webhooks/${process.env.APP_ID}/${req.body.token}/messages/${req.body.message.id}`;
+    if (type === InteractionType.MESSAGE_COMPONENT) {
+      const customId = data.custom_id;
 
-      const query = endpoint.values[0];
-      const videoIndex = 0;
-      let videoData = [];
-
-      try {
-        const response = await fetch(
-          `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-            query
-          )}&maxResults=5&key=${process.env.YOUTUBE_API_KEY}`, // Use the YouTube API key from the environment variable
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-        const data = await response.json();
-        if (data && data.items.length > 0) {
-          const videoId = data.items[0].id.videoId;
-          const videoTitle = data.items[0].snippet.title;
-          const videoThumbnailUrl = data.items[0].snippet.thumbnails.high.url;
-          const url = `https://www.youtube.com/watch?v=${videoId}`;
-
-          return res.send({
-            type: InteractionResponseType.UPDATE_MESSAGE,
-            data: {
-              content: `https://www.youtube.com/watch?v=${videoId}`,
-              components: endpoint.components, // Keep the original components
-            },
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching from youtube:", error);
+      if (customId === "search_button") {
         return res.send({
-          type: InteractionResponseType.UPDATE_MESSAGE,
+          type: InteractionResponseType.MODAL,
           data: {
-            content: "An error occurred while fetching the image.",
+            custom_id: "youtube_modal",
+            title: "Search YouTube",
+            components: [
+              {
+                type: 1, // Action Row
+                components: [
+                  {
+                    type: 4, // Input Text
+                    custom_id: "search_query",
+                    style: 1, // Short
+                    label: "Search...",
+                    required: true,
+                  },
+                ],
+              },
+            ],
           },
         });
       }
