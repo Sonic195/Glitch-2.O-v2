@@ -550,9 +550,9 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
     const modalId = data.custom_id;
 
-    if (modalId === "youtube_modal") {
+    if (modalId.startsWith("youtube_modal")) {
       const userId = req.body.member.user.id;
-      const searchQuery = data.components[0].components[0].value;
+      const searchQuery = data.data.custom_id;
 
       // Log the search query to debug
       console.log("Search query:", searchQuery);
