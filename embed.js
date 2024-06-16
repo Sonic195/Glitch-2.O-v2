@@ -60,5 +60,5 @@ export const awakeEmbed = new EmbedBuilder()
   .setColor(0x192871)
   .setTitle("Bring The Bot Online")
   .setDescription(
-    "if the bot goes offline, click on the button below to force it awake"
+    "if the bot goes offline, click on the button below to force it awake. if the bot is online, it will respond with 'the bot is online.'"
   );
