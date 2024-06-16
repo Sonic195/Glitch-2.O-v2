@@ -552,10 +552,11 @@ app.post("/interactions", async function (req, res) {
     const modalId = data.custom_id;
 
     if (modalId === "youtube_modal") {
-      const searchQueryComponent =
-        data.components &&
-        data.components[0] &&
-        data.components[0].components[0];
+      let searchQueryComponent = '';
+      for (let action of data.components) {
+        let inputComponent = action.component[0];
+        searchQueryComponent += `${inputComponent.custom_id}: ${inputComponent.value}\n`;
+      }
 
       if (searchQueryComponent && searchQueryComponent.value) {
         const userId = req.body.member.user.id;
