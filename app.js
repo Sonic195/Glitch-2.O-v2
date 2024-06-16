@@ -548,14 +548,14 @@ app.post("/interactions", async function (req, res) {
     }
   }
 
-  if (type === InteractionType.APPLICATION_MODAL_SUBMIT) {
+  if (type === InteractionType.MODAL_SUBMIT) {
     const modalId = data.custom_id;
 
     if (modalId === "youtube_modal") {
       let searchQueryComponent = '';
       for (let action of data.components) {
         let inputComponent = action.component[0];
-        searchQueryComponent += `${inputComponent.custom_id}: ${inputComponent.value}\n`;
+        searchQueryComponent += `${inputComponent.search_query}: ${inputComponent.value}\n`;
       }
 
       if (searchQueryComponent && searchQueryComponent.value) {
