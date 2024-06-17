@@ -118,6 +118,39 @@ app.post("/interactions", async function (req, res) {
         };
       }
 
+      function updateGameState(userId, move) {
+        const gameState = getGameState(userId);
+        const expectedMove = gameState.sequence[gameState.currentMove];
+
+        if (move === expectedMove) {
+          gameState.currentMove++;
+
+          if (gameState.currentMove === gameState.sequence.length) {
+            gameState.stage++;
+            gameState.currentMove = 0;
+            gameState.timeLeft = 3;
+            Object.assign(gameState, generateGameState(gameState.stage));
+          } else {
+            const position = gameState.sequence[gameState.currentMove];
+            gameState.screen = gameState.screen
+              .split("\n")
+              .map((row, index) => {
+                if (index === 4 - gameState.currentMove) {
+                  return position === "left" ? "🏀🗑️" : "🗑️🏀";
+                }
+                return row;
+              })
+              .join("\n");
+          }
+
+          saveGameState(userId, gameState);
+          return gameState;
+        } else {
+          return null; // Indicates wrong move
+        }
+      }
+
+
       const ladderEmbed = new EmbedBuilder()
         .setColor(0xadd8e6)
         .setTitle("The Ladder Minigame")
