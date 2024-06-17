@@ -99,58 +99,6 @@ app.post("/interactions", async function (req, res) {
     const { name, options, type, member, user } = data;
 
     if (name === "ladder") {
-      // Define game state generation function inside the command block
-      function generateGameState(stage) {
-        const positions = ["left", "right"];
-        const screen = [];
-        const sequence = [];
-
-        for (let i = 0; i < 5; i++) {
-          const position =
-            positions[Math.floor(Math.random() * positions.length)];
-          sequence.push(position);
-          screen.push(position === "left" ? "🚧🗑️" : "🗑️🚧");
-        }
-
-        return {
-          sequence,
-          screen: screen.reverse().join("\n"),
-        };
-      }
-
-      function updateGameState(userId, move) {
-        const gameState = getGameState(userId);
-        const expectedMove = gameState.sequence[gameState.currentMove];
-
-        if (move === expectedMove) {
-          gameState.currentMove++;
-
-          if (gameState.currentMove === gameState.sequence.length) {
-            gameState.stage++;
-            gameState.currentMove = 0;
-            gameState.timeLeft = 3;
-            Object.assign(gameState, generateGameState(gameState.stage));
-          } else {
-            const position = gameState.sequence[gameState.currentMove];
-            gameState.screen = gameState.screen
-              .split("\n")
-              .map((row, index) => {
-                if (index === 4 - gameState.currentMove) {
-                  return position === "left" ? "🏀🗑️" : "🗑️🏀";
-                }
-                return row;
-              })
-              .join("\n");
-          }
-
-          saveGameState(userId, gameState);
-          return gameState;
-        } else {
-          return null; // Indicates wrong move
-        }
-      }
-
-
       const ladderEmbed = new EmbedBuilder()
         .setColor(0xadd8e6)
         .setTitle("The Ladder Minigame")
@@ -497,6 +445,90 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.MESSAGE_COMPONENT) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
+
+    if (componentId.startsWith("start_game")) {
+      function generateGameState(stage) {
+        const positions = ["left", "right"];
+        const screen = [];
+        const sequence = [];
+
+        for (let i = 0; i < 5; i++) {
+          const position =
+            positions[Math.floor(Math.random() * positions.length)];
+          sequence.push(position);
+          screen.push(position === "left" ? "🚧🗑️" : "🗑️🚧");
+        }
+
+        return {
+          sequence,
+          screen: screen.reverse().join("\n"),
+        };
+      }
+
+      function updateGameState(userId, move) {
+        const gameState = getGameState(userId);
+        const expectedMove = gameState.sequence[gameState.currentMove];
+
+        if (move === expectedMove) {
+          gameState.currentMove++;
+
+          if (gameState.currentMove === gameState.sequence.length) {
+            gameState.stage++;
+            gameState.currentMove = 0;
+            gameState.timeLeft = 3;
+            Object.assign(gameState, generateGameState(gameState.stage));
+          } else {
+            const position = gameState.sequence[gameState.currentMove];
+            gameState.screen = gameState.screen
+              .split("\n")
+              .map((row, index) => {
+                if (index === 4 - gameState.currentMove) {
+                  return position === "left" ? "🏀🗑️" : "🗑️🏀";
+                }
+                return row;
+              })
+              .join("\n");
+          }
+
+          saveGameState(userId, gameState);
+          return gameState;
+        } else {
+          return null; // Indicates wrong move
+        }
+      }
+
+      const gameState = generateGameState(1);
+
+      saveGameState(userId, {
+        ...gameState,
+        stage: 1,
+        currentMove: 0,
+        timeLeft: 3,
+      });
+
+      const gameEmbed = new EmbedBuilder()
+        .setColor(0xff0000)
+        .setTitle("The Ladder Minigame")
+        .addFields(
+          { name: "Stage", value: "1", inline: true },
+          { name: "Time Left", value: "3 seconds", inline: true }
+        )
+        .setDescription(gameState.screen)
+        .setTimestamp()
+        .setFooter({
+          text: "Can you make it to the top?",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
+        });
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          embeds: [gameEmbed]
+          
+        }
+      })
+      
+    }
 
     if (componentId.startsWith("awake_button")) {
       return res.send({
