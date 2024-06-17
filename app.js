@@ -265,7 +265,7 @@ app.post("/interactions", async function (req, res) {
                   type: 2,
                   custom_id: "yt_search_button_icognito",
                   style: 1,
-                  label: "🌑"
+                  label: "Hidden"
                 }
               ],
             },
@@ -899,12 +899,13 @@ app.post("/interactions", async function (req, res) {
             responseData.items.length > 0
           ) {
             const videoId = responseData.items[0].id.videoId;
+            const url = `https://www.youtube.com/watch?v=${videoId}`;
 
             return res.send({
               type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
               data: {
-                content: `https://www.youtube.com/watch?v=${videoId}`,
-                flags: InteractionResponseFlags.EPHEMERAL,
+                content: url,
+                ephemeral: true,
               },
             });
           } else {
