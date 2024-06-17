@@ -70,7 +70,7 @@ const activeGames = {};
 
 const userRewardSchema = new mongoose.Schema({
   userId: String,
-  glitches: Number,
+  glitchos: Number,
   ytTokens: Number,
   lastClaimed: Date,
 });
@@ -332,7 +332,6 @@ app.post("/interactions", async function (req, res) {
       }
     }
 
-    // "test" command
     if (name === "test") {
       // Send a message into the channel where command was triggered from
       return res.send({
@@ -392,6 +391,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
+    
     if (name === "coinflip") {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -834,6 +834,7 @@ app.post("/interactions", async function (req, res) {
       }
     }
   }
+  
 });
 
 app.listen(PORT, () => {
