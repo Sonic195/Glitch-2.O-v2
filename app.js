@@ -29,22 +29,6 @@ import { testEmbed, ytEmbed, awakeEmbed } from "./embed.js";
 import { Schema, model } from "mongoose";
 import { getGameState, saveGameState, deleteGameState } from "./ladder.js";
 
-// Placeholder for an in-memory storage
-// In a real application, you would use a database
-const streaks = {};
-
-// Function to get the current streak for a user
-function getStreak(userId) {
-  // Return the streak for the user if it exists, otherwise return 0
-  return streaks[userId] || 0;
-}
-
-// Function to set the streak for a user
-function setStreak(userId, streak) {
-  // Set the streak for the user
-  streaks[userId] = streak;
-}
-
 const userId = `get/users/{user.id}`;
 // Create an express app
 const app = express();
@@ -265,8 +249,8 @@ app.post("/interactions", async function (req, res) {
                   type: 2,
                   custom_id: "yt_search_button_icognito",
                   style: 1,
-                  label: "Hidden"
-                }
+                  label: "Hidden",
+                },
               ],
             },
           ],
@@ -397,7 +381,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    
+
     if (name === "coinflip") {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -659,7 +643,7 @@ app.post("/interactions", async function (req, res) {
         },
       });
     }
-    
+
     if (componentId.startsWith("yt_search_button_icognito")) {
       return res.send({
         type: InteractionResponseType.MODAL,
@@ -689,7 +673,20 @@ app.post("/interactions", async function (req, res) {
 
       const pingPong = ["ping", "ping", "miss"];
       const result = pingPong[Math.floor(Math.random() * pingPong.length)];
-      let streaks = 0;
+
+      const streaks = 0;
+
+      // Function to get the current streak for a user
+      function getStreak(userId) {
+        // Return the streak for the user if it exists, otherwise return 0
+        return streaks[userId] || 0;
+      }
+
+      // Function to set the streak for a user
+      function setStreak(userId, streak) {
+        // Set the streak for the user
+        streaks[userId] = streak;
+      }
 
       if (result === "ping") {
         let currentStreak = getStreak(userId); // Get the current streak for the user
@@ -863,7 +860,7 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
+
     if (modalId === "youtube_modal_icognito") {
       const searchQueryComponent =
         data.components &&
@@ -939,9 +936,7 @@ app.post("/interactions", async function (req, res) {
         });
       }
     }
-    
   }
-  
 });
 
 app.listen(PORT, () => {
