@@ -107,7 +107,11 @@ app.post("/interactions", async function (req, res) {
             value:
               "Press the buttons in order of the baskets starting from below and ending at the top. If you don't complete a stage in time, or press the button in the wrong order, the game is over.",
           },
-          { name: "Developer's High Score", value: "I made it till stage 21. think you can ACTUALLY beat it? In your dreams, probably." }
+          {
+            name: "Developer's High Score",
+            value:
+              "I made it till stage 21. think you can ACTUALLY beat it? In your dreams, probably.",
+          }
         )
         .setTimestamp()
         .setFooter({
