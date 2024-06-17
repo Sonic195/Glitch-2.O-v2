@@ -27,6 +27,7 @@ import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
 import { testEmbed, ytEmbed, awakeEmbed } from "./embed.js";
 import { Schema, model } from "mongoose";
+import { getGameState, saveGameState, deleteGameState } from "./ladder.js";
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -98,6 +99,25 @@ app.post("/interactions", async function (req, res) {
     const { name, options, type, member, user } = data;
 
     if (name === "ladder") {
+      // Define game state generation function inside the command block
+      function generateGameState(stage) {
+        const positions = ["left", "right"];
+        const screen = [];
+        const sequence = [];
+
+        for (let i = 0; i < 5; i++) {
+          const position =
+            positions[Math.floor(Math.random() * positions.length)];
+          sequence.push(position);
+          screen.push(position === "left" ? "🚧🗑️" : "🗑️🚧");
+        }
+
+        return {
+          sequence,
+          screen: screen.reverse().join("\n"),
+        };
+      }
+
       const ladderEmbed = new EmbedBuilder()
         .setColor(0xadd8e6)
         .setTitle("The Ladder Minigame")
@@ -107,7 +127,11 @@ app.post("/interactions", async function (req, res) {
             value:
               "Press the buttons in order of the baskets starting from below and ending at the top. If you don't complete a stage in time, or press the button in the wrong order, the game is over.",
           },
-          { name: "Developer's High Score", value: "I made it till stage 21. think you can ACTUALLY beat it? In your dreams, probably." }
+          {
+            name: "Developer's High Score",
+            value:
+              "I made it till stage 21. think you can ACTUALLY beat it? In your dreams, probably.",
+          }
         )
         .setTimestamp()
         .setFooter({
