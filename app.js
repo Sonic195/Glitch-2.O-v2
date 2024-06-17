@@ -519,7 +519,7 @@ app.post("/interactions", async function (req, res) {
           text: "Can you make it to the top?",
           iconURL: "https://i.imgur.com/AfFp7pu.png",
         });
-      
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
@@ -538,85 +538,86 @@ app.post("/interactions", async function (req, res) {
                   type: 2,
                   custom_id: "move_right",
                   style: 1,
-                  label: "Right"
-                }
-              ]
-            }
-          ]
-        }
-      })
-    }
-    
-    if (componentId.startsWith("move_left" || "move_right")) {
-  const userId = req.body.member.user.id;
-  const userMove = data.custom_id === "move_left" ? "left" : "right";
-  
-  // Fetch the game state from a database or in-memory store
-  const gameState = getGameState(userId);
-
-  if (gameState.sequence[gameState.currentMove] === userMove) {
-    gameState.currentMove++;
-    
-    if (gameState.currentMove === gameState.sequence.length) {
-      gameState.stage++;
-      gameState.currentMove = 0;
-      gameState.timeLeft = 3;
-      gameState = generateGameState(gameState.stage);
-    }
-  } else {
-    return res.send({
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: "Game over! You pressed the wrong button.",
-      },
-    });
-  }
-
-  const gameEmbed = new EmbedBuilder()
-    .setColor(0xff0000)
-    .setTitle("The Ladder Minigame")
-    .addFields(
-      { name: "Stage", value: gameState.stage.toString(), inline: true },
-      { name: "Time Left", value: `${gameState.timeLeft} seconds`, inline: true }
-    )
-    .setDescription(gameState.screen)
-    .setTimestamp()
-    .setFooter({
-      text: "Can you make it to the top?",
-      iconURL: "https://i.imgur.com/AfFp7pu.png",
-    });
-
-  // Save the updated game state to a database or in-memory store
-  saveGameState(userId, gameState);
-
-  return res.send({
-    type: InteractionResponseType.UPDATE_MESSAGE,
-    data: {
-      embeds: [gameEmbed],
-      components: [
-        {
-          type: 1, // Action Row
-          components: [
-            {
-              type: 2, // Button
-              custom_id: "move_left",
-              style: 1, // Primary
-              label: "Left",
-            },
-            {
-              type: 2, // Button
-              custom_id: "move_right",
-              style: 1, // Primary
-              label: "Right",
+                  label: "Right",
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-  });
-}
+      });
+    }
 
-      
+    if (componentId.startsWith("move_left" || "move_right")) {
+      const userId = req.body.member.user.id;
+      const userMove = data.custom_id === "move_left" ? "left" : "right";
+
+      // Fetch the game state from a database or in-memory store
+      const gameState = getGameState(userId);
+
+      if (gameState.sequence[gameState.currentMove] === userMove) {
+        gameState.currentMove++;
+
+        if (gameState.currentMove === gameState.sequence.length) {
+          gameState.stage++;
+          gameState.currentMove = 0;
+          gameState.timeLeft = 3;
+          gameState = generateGameState(gameState.stage);
+        }
+      } else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "Game over! You pressed the wrong button.",
+          },
+        });
+      }
+
+      const gameEmbed = new EmbedBuilder()
+        .setColor(0xff0000)
+        .setTitle("The Ladder Minigame")
+        .addFields(
+          { name: "Stage", value: gameState.stage.toString(), inline: true },
+          {
+            name: "Time Left",
+            value: `${gameState.timeLeft} seconds`,
+            inline: true,
+          }
+        )
+        .setDescription(gameState.screen)
+        .setTimestamp()
+        .setFooter({
+          text: "Can you make it to the top?",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
+        });
+
+      // Save the updated game state to a database or in-memory store
+      saveGameState(userId, gameState);
+
+      return res.send({
+        type: InteractionResponseType.UPDATE_MESSAGE,
+        data: {
+          embeds: [gameEmbed],
+          components: [
+            {
+              type: 1, // Action Row
+              components: [
+                {
+                  type: 2, // Button
+                  custom_id: "move_left",
+                  style: 1, // Primary
+                  label: "Left",
+                },
+                {
+                  type: 2, // Button
+                  custom_id: "move_right",
+                  style: 1, // Primary
+                  label: "Right",
+                },
+              ],
+            },
+          ],
+        },
+      });
     }
 
     if (componentId.startsWith("awake_button")) {
