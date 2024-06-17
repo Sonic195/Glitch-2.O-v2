@@ -164,7 +164,6 @@ app.post("/interactions", async function (req, res) {
     }
 
     if (name === "reg") {
-      const userId = member.user.id;
       const user = await Data.findOne({ userId });
       if (!user) {
         await Data.create({

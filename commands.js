@@ -167,6 +167,12 @@ const LADDER_COMMAND = {
   type: 1,
 }
 
+const COMMAND = {
+  name: "",
+  description: "",
+  type: 1,
+}
+
 const ALL_COMMANDS = [
   TEST_COMMAND,
   CHALLENGE_COMMAND,
