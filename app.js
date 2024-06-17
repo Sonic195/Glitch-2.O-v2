@@ -27,7 +27,7 @@ import { getShuffledOptions, getResult } from "./game.js";
 import mongoose from "mongoose";
 import { testEmbed, ytEmbed, awakeEmbed } from "./embed.js";
 import { Schema, model } from "mongoose";
-import { generateGameState } from "./ladder.js";
+import { generateGameState, getGameState, saveGameState } from "./ladder.js";
 
 // Placeholder for an in-memory storage
 // In a real application, you would use a database
@@ -446,7 +446,7 @@ app.post("/interactions", async function (req, res) {
     // custom_id set in payload when sending message component
     const componentId = data.custom_id;
 
-    if (co) {
+    if (componentId.startsWith("start_game")) {
       const stage = 1;
       const timeLeft = 3;
       const gameState = generateGameState(stage);

@@ -14,3 +14,13 @@ export function generateGameState(stage) {
     screen: screen.reverse().join("\n"),
   };
 }
+
+export const gameStates = {};
+
+export function getGameState(userId) {
+  return gameStates[userId] || { stage: 1, currentMove: 0, timeLeft: 3, sequence: [], screen: "" };
+}
+
+export function saveGameState(userId, gameState) {
+  gameStates[userId] = gameState;
+}
