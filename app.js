@@ -261,6 +261,12 @@ app.post("/interactions", async function (req, res) {
                   style: 1, // Primary
                   label: "Search YouTube",
                 },
+                {
+                  type: 2,
+                  custom_id: "icognito_yt",
+                  style: 1,
+                  label: "🌑"
+                }
               ],
             },
           ],
@@ -635,6 +641,30 @@ app.post("/interactions", async function (req, res) {
         type: InteractionResponseType.MODAL,
         data: {
           custom_id: "youtube_modal",
+          title: "Search YouTube",
+          components: [
+            {
+              type: 1, // Action Row
+              components: [
+                {
+                  type: 4, // Input Text
+                  custom_id: "search_query",
+                  style: 1, // Short
+                  label: "Search...",
+                  required: true,
+                },
+              ],
+            },
+          ],
+        },
+      });
+    }
+    
+    if (componentId.startsWith("icognito_yt")) {
+      return res.send({
+        type: InteractionResponseType.MODAL,
+        data: {
+          custom_id: "youtube_modal_icognito",
           title: "Search YouTube",
           components: [
             {
