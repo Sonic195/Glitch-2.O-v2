@@ -51,3 +51,19 @@ app.post("/interactions", async function (req, res) {
     }
     
   YouTube mongodb+srv://Joker:<password>@glitch2o.tqkm8rw.mongodb.net/?retryWrites=true&w=majority&appName=Glitch2O
+  
+  
+  The problem was with the “Application_Modal_Submit”. This was wrong, and the correct format was “Modal_Submit.” Now the command works perfectly.
+
+Now, I have a new idea of a command, which is of a minigame I designed. However, I don’t know how to code it. So here’s how the minigame goes:
+The name of the command is “ladder”. When a user runs the command, he will see an embed with the title “The Ladder Minigame”, with two fields, the first one will have the tutorial of the game, and the second will have the high score of the developer. At the bottom of the embed, there will be a button, saying “GO”. When the user presses it, it will send another embed, which is where the game is played.
+So here’s how the game embed looks like: at the top, there will be 2 inline fields, the first one with the name “Stage” and value of the stage the user is at. The second inline field will have the name “Time Left”, and the value is 3 seconds, which is the amount of time the user has for each stage. In discord, there is a special way to show this, the “live” time, but I don’t know how to use it. Then, at the bottom, is the “screen” for the game.
+The screen will have an area of 5x2, which will be looking something like:
+🗑️
+  🗑️
+🗑️
+🗑️
+  🗑️
+The basket (🗑️) can be on the left or the right. It changes every stage. Below the game embed, there will be 2 buttons, “left” and “right”. In order to pass the above level, the user must press the buttons in order of the basket that is kept starting from below and ending at the top. For example, the sequence for the above stage will be “right, left, left, right, left”. And, while the certain basket is being held, it should change to “🏀”. When the user move to the next basket, the previous one should turn back into a basket and the ball should go to the next one. If the user doesn’t complete a stage in time, or presses the button in the wrong order, the game is over. Also, for each stage, the basket are put in a random order, left or right.
+
+Please help me code the game, with the code for the game and the command and the buttons.

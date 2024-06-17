@@ -161,9 +161,9 @@ const AWAKE_COMMAND = {
   type: 1,
 }
 
-const GUESSER_COMMAND = {
-  name: "guesser",
-  description: "guess the number if its higher or lower",
+const LADDER_COMMAND = {
+  name:"ladder",
+  description: "a minigame",
   type: 1,
 }
 
@@ -180,7 +180,7 @@ const ALL_COMMANDS = [
   DAILY_COMMAND,
   REG_COMMAND,
   AWAKE_COMMAND,
-  GUESSER_COMMAND,
+  LADDER_COMMAND,
 ];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

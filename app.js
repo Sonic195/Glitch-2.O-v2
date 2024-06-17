@@ -97,32 +97,43 @@ app.post("/interactions", async function (req, res) {
   if (type === InteractionType.APPLICATION_COMMAND) {
     const { name, options, type, member, user } = data;
 
-    if (name === "guesser") {
-      function numGetter1() {
-        const num = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-        return num[Math.floor(Math.random() * num.length)];
-      }
-      function numGetter2() {
-        const num = ["2", "3", "4", "5", "6", "7", "8", "9"];
-        return num[Math.floor(Math.random() * num.length)];
-      }
-
-      const guesserEmbed = new EmbedBuilder()
-        .setColor(0x818940)
-        .setTitle("Number Guesser")
-        .addFields({
-          name: "Guess if the number is higher or lower than:",
-          value: numGetter2(),
+    if (name === "ladder") {
+      const ladderEmbed = new EmbedBuilder()
+        .setColor(0xadd8e6)
+        .setTitle("The Ladder Minigame")
+        .addFields(
+          {
+            name: "Tutorial",
+            value:
+              "Press the buttons in order of the baskets starting from below and ending at the top. If you don't complete a stage in time, or press the button in the wrong order, the game is over.",
+          },
+          { name: "Developer's High Score", value: "I made it till stage 21. think you can ACTUALLY beat it? In your dreams, probably." }
+        )
+        .setTimestamp()
+        .setFooter({
+          text: "bad luck!",
+          iconURL: "https://i.imgur.com/AfFp7pu.png",
         });
-      
+
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          embeds: [guesserEmbed],
-          
-        }
-      })
-      
+          embeds: [ladderEmbed],
+          components: [
+            {
+              type: 1, // Action Row
+              components: [
+                {
+                  type: 2, // Button
+                  custom_id: "start_game",
+                  style: 1, // Primary
+                  label: "GO",
+                },
+              ],
+            },
+          ],
+        },
+      });
     }
 
     if (name === "awake") {
