@@ -6,7 +6,7 @@ export function generateGameState(stage) {
   for (let i = 0; i < 5; i++) {
     const position = positions[Math.floor(Math.random() * positions.length)];
     sequence.push(position);
-    screen.push(position === "left" ? "🏀🗑️" : "🗑️🏀");
+    screen.push(position === "left" ? "🚧🗑️" : "🗑️🚧");
   }
 
   return {
